@@ -1,0 +1,12 @@
+#spring:
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#  datasource:
+#    url: "jdbc:postgresql://localhost:5432/springbootjpa"
+#    username: gitea
+#    password: gitea
+
+server:
+  port: 8091
