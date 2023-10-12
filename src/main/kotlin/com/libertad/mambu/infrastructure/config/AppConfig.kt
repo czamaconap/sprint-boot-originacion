@@ -4,12 +4,9 @@ import com.libertad.mambu.aplication.service.ClientService
 import com.libertad.mambu.aplication.service.DepositAccountService
 import com.libertad.mambu.aplication.usecases.CreateClientUseCaseImpl
 import com.libertad.mambu.aplication.usecases.CreateDepositAccountUseCaseImpl
-import com.libertad.mambu.domain.port.`in`.CreateClientUseCase
-import com.libertad.mambu.domain.port.`in`.CreateDepositAccountUseCase
-import com.libertad.mambu.domain.port.out.ProductRepositoryPost
-import com.libertad.mambu.domain.port.out.RemoteClientServicePort
-import com.libertad.mambu.domain.port.out.RemoteDepositAccountServicePort
-import com.libertad.mambu.domain.port.out.RemoteProductServicePort
+import com.libertad.mambu.aplication.usecases.GenerateCBAccountUseCaseImpl
+import com.libertad.mambu.domain.port.`in`.*
+import com.libertad.mambu.domain.port.out.*
 import com.libertad.mambu.infrastructure.adapter.RemoteClientServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteDepositAccountServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteProductServiceAdapter
@@ -25,7 +22,6 @@ import org.apache.hc.client5.http.impl.classic.HttpClients
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder
 import org.apache.hc.client5.http.ssl.NoopHostnameVerifier
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory
-import org.apache.hc.core5.ssl.SSLContextBuilder
 import org.springframework.web.client.RestTemplate
 import javax.net.ssl.SSLContext
 
@@ -105,14 +101,19 @@ class AppConfig {
         return ClientService(createClientUseCase)
     }
 
-
-
-
-
+    @Bean
+    fun depositAccountService(
+        createDepositAccountUseCase: CreateDepositAccountUseCase,
+        generateCBAccountUseCase: GenerateCBAccountUseCase,
+        updateCBAccountUseCase: UpdateCBAccountUseCase
+    ): DepositAccountService {
+        return DepositAccountService(createDepositAccountUseCase,generateCBAccountUseCase, updateCBAccountUseCase)
+    }
 
     @Bean
-    fun depositAccountService(createDepositAccountUseCase: CreateDepositAccountUseCase): DepositAccountService {
-        return DepositAccountService(createDepositAccountUseCase)
+    fun generateCBAccountUseCase(remoteDepositAccountServicePort: RemoteDepositAccountServicePort): GenerateCBAccountUseCase {
+        return GenerateCBAccountUseCaseImpl(remoteDepositAccountServicePort)
     }
+
 
 }
