@@ -1,6 +1,5 @@
 package com.libertad.mambu.infrastructure.adapter
 
-import com.libertad.mambu.domain.port.out.RemoteClientServicePort
 import com.libertad.mambu.domain.port.out.RemoteDepositAccountServicePort
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders

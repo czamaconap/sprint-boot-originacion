@@ -1,7 +1,6 @@
 package com.libertad.mambu.aplication.usecases
 
 import com.libertad.mambu.domain.model.Product
-import com.libertad.mambu.infrastructure.mapper.ProductMapper
 import org.springframework.stereotype.Service
 
 @Service

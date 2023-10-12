@@ -1,7 +1,5 @@
 package com.libertad.mambu.infrastructure.controller
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.libertad.mambu.aplication.service.ClientService
 import org.apache.hc.core5.http.HttpStatus
 import org.springframework.http.ResponseEntity

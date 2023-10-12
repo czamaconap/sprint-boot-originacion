@@ -1,7 +1,7 @@
 package com.libertad.mambu.infrastructure.controller
 
-import com.libertad.mambu.domain.model.Product
 import com.libertad.mambu.aplication.usecases.GetProductsUseCase
+import com.libertad.mambu.domain.model.Product
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
