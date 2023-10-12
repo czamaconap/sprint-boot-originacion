@@ -1,6 +1,8 @@
 package com.libertad.mambu.infrastructure.config
 
 import com.libertad.mambu.aplication.service.ClientService
+import com.libertad.mambu.aplication.usecases.CreateClientUseCaseImpl
+import com.libertad.mambu.domain.port.`in`.CreateClientUseCase
 import com.libertad.mambu.domain.port.out.ProductRepositoryPost
 import com.libertad.mambu.domain.port.out.RemoteClientServicePort
 import com.libertad.mambu.domain.port.out.RemoteProductServicePort
@@ -79,8 +81,13 @@ class AppConfig {
     }
 
     @Bean
-    fun clientService(remoteClientServicePort: RemoteClientServicePort): ClientService {
-        return ClientService(remoteClientServicePort)
+    fun createClientUseCase(remoteClientServicePort: RemoteClientServicePort): CreateClientUseCase {
+        return CreateClientUseCaseImpl(remoteClientServicePort)
+    }
+
+    @Bean
+    fun clientService(createClientUseCase: CreateClientUseCase): ClientService {
+        return ClientService(createClientUseCase)
     }
 
 }
