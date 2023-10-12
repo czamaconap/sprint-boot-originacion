@@ -7,9 +7,20 @@ import com.libertad.mambu.domain.port.out.RemoteProductServicePort
 import com.libertad.mambu.infrastructure.adapter.RemoteClientServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteProductServiceAdapter
 import com.libertad.mambu.infrastructure.persistence.repository.JpaProductorAdapter
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
+import java.security.cert.X509Certificate
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient
+import org.apache.hc.client5.http.impl.classic.HttpClients
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory
+import org.apache.hc.core5.ssl.SSLContextBuilder
 import org.springframework.web.client.RestTemplate
+import javax.net.ssl.SSLContext
 
 
 @Configuration
@@ -17,8 +28,39 @@ class AppConfig {
 
     @Bean
     fun restTemplate(): RestTemplate {
-        return RestTemplate()
+        val trustAllCertificates = arrayOf<TrustManager>(
+            object : X509TrustManager {
+                override fun getAcceptedIssuers(): Array<X509Certificate?> = arrayOfNulls(0)
+
+                override fun checkClientTrusted(certs: Array<X509Certificate>, authType: String) {}
+
+                override fun checkServerTrusted(certs: Array<X509Certificate>, authType: String) {}
+            }
+        )
+
+        val sslContext = SSLContext.getInstance("TLS")
+        sslContext.init(null, trustAllCertificates, java.security.SecureRandom())
+
+        val socketFactory = SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE)
+
+        val connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+            .setSSLSocketFactory(socketFactory)
+            .build()
+
+        val httpClient: CloseableHttpClient = HttpClients.custom()
+            .setConnectionManager(connectionManager)
+            .build()
+
+        val factory = HttpComponentsClientHttpRequestFactory(httpClient)
+
+        return RestTemplate(factory)
     }
+
+
+    /*@Bean
+    fun restTemplate(): RestTemplate {
+        return RestTemplate()
+    }*/
 
     @Bean
     fun remoteProductServicePort(restTemplate: RestTemplate): RemoteProductServicePort {
