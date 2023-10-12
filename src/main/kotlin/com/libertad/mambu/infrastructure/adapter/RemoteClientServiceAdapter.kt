@@ -14,7 +14,9 @@ class RemoteClientServiceAdapter(
         val url = "https://apic-min-gw-gateway-cp4i.apps.cp4i.nopro.libertad.dev/libertad-qa/sandbox/api/clients"
         val headers = HttpHeaders().apply {
             contentType = MediaType.APPLICATION_JSON
+            set("Accept","application/vnd.mambu.v2+json")
             set("X-IBM-Client-Id", "6778cad6d8edcfa7fed7de5b0bd85965")
+            //set("X-IBM-Client-Secret","");
         }
 
         System.out.println("#################################REQUEST:\n")
