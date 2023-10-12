@@ -53,6 +53,6 @@ class RemoteDepositAccountServiceAdapter(
         System.out.println("#################################REQUEST:\n")
         System.out.println(data)
         val request = HttpEntity(data, headers)
-        return restTemplate.postForObject(url, request, HashMap::class.java) as HashMap<String, Any>
+        return restTemplate.patchForObject(url, request, HashMap::class.java) as HashMap<String, Any>
     }
 }
