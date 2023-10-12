@@ -1,12 +1,17 @@
 package com.libertad.mambu.infrastructure.config
 
 import com.libertad.mambu.aplication.service.ClientService
+import com.libertad.mambu.aplication.service.DepositAccountService
 import com.libertad.mambu.aplication.usecases.CreateClientUseCaseImpl
+import com.libertad.mambu.aplication.usecases.CreateDepositAccountUseCaseImpl
 import com.libertad.mambu.domain.port.`in`.CreateClientUseCase
+import com.libertad.mambu.domain.port.`in`.CreateDepositAccountUseCase
 import com.libertad.mambu.domain.port.out.ProductRepositoryPost
 import com.libertad.mambu.domain.port.out.RemoteClientServicePort
+import com.libertad.mambu.domain.port.out.RemoteDepositAccountServicePort
 import com.libertad.mambu.domain.port.out.RemoteProductServicePort
 import com.libertad.mambu.infrastructure.adapter.RemoteClientServiceAdapter
+import com.libertad.mambu.infrastructure.adapter.RemoteDepositAccountServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteProductServiceAdapter
 import com.libertad.mambu.infrastructure.persistence.repository.JpaProductorAdapter
 import javax.net.ssl.TrustManager
@@ -81,13 +86,33 @@ class AppConfig {
     }
 
     @Bean
+    fun remoteDepositAccountServicePort(restTemplate: RestTemplate): RemoteDepositAccountServicePort {
+        return RemoteDepositAccountServiceAdapter(restTemplate)
+    }
+
+    @Bean
     fun createClientUseCase(remoteClientServicePort: RemoteClientServicePort): CreateClientUseCase {
         return CreateClientUseCaseImpl(remoteClientServicePort)
     }
 
     @Bean
+    fun createDepositAccountUseCase(remoteDepositAccountServicePort: RemoteDepositAccountServicePort): CreateDepositAccountUseCase {
+        return CreateDepositAccountUseCaseImpl(remoteDepositAccountServicePort)
+    }
+
+    @Bean
     fun clientService(createClientUseCase: CreateClientUseCase): ClientService {
         return ClientService(createClientUseCase)
+    }
+
+
+
+
+
+
+    @Bean
+    fun depositAccountService(createDepositAccountUseCase: CreateDepositAccountUseCase): DepositAccountService {
+        return DepositAccountService(createDepositAccountUseCase)
     }
 
 }
