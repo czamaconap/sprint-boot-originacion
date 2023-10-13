@@ -18,11 +18,11 @@ class OnboardingUseCaseImpl(
         var contract:HashMap<String, Any> = HashMap<String, Any>()
 
 
-        var clientRes:HashMap<String, Any>? = null
-        var accountRes:HashMap<String, Any> = HashMap<String, Any>()
-        var generateCtaCBRes:HashMap<String, Any> = HashMap<String, Any>()
-        var updateCtaCBres:HashMap<String, Any> = HashMap<String, Any>()
-        var contractRes:HashMap<String, Any> = HashMap<String, Any>()
+        var clientRes:HashMap<String, Any>?
+        var accountRes:HashMap<String, Any> ?
+        var generateCtaCBRes:HashMap<String, Any> ?
+        var updateCtaCBRes:HashMap<String, Any> ?
+        var contractRes:HashMap<String, Any> ?
 
 
         var response: HashMap<String, Any> = HashMap<String, Any>()
@@ -30,14 +30,12 @@ class OnboardingUseCaseImpl(
 
             clientRes = createClientUseCase.createClient(clientReq)
 
-            if(clientRes != null){
-                clientRes["clientRoleKey"]
-            }
+            clientRes["clientRoleKey"]
 
-            createDepositAccountUseCase.createDepositAccount(account)
-            generateCBAccountUseCase.generateCBAccount(generateCtaCB)
-            updateCBAccountUseCase.updateCBAccount(updateCtaCB)
-            createContractUseCase.createContract(contract)
+            accountRes = createDepositAccountUseCase.createDepositAccount(account)
+            generateCtaCBRes = generateCBAccountUseCase.generateCBAccount(generateCtaCB)
+            updateCtaCBRes = updateCBAccountUseCase.updateCBAccount(updateCtaCB)
+            contractRes = createContractUseCase.createContract(contract)
 
             response["status"] = "successes"
             response["code"] = "000"
