@@ -1,18 +1,14 @@
 package com.libertad.mambu.infrastructure.config
 
 import com.libertad.mambu.aplication.service.ClientService
+import com.libertad.mambu.aplication.service.ContractsService
 import com.libertad.mambu.aplication.service.DepositAccountService
 import com.libertad.mambu.aplication.usecases.CreateClientUseCaseImpl
+import com.libertad.mambu.aplication.usecases.CreateContractUseCaseImpl
 import com.libertad.mambu.aplication.usecases.CreateDepositAccountUseCaseImpl
 import com.libertad.mambu.aplication.usecases.GenerateCBAccountUseCaseImpl
-import com.libertad.mambu.domain.port.`in`.CreateClientUseCase
-import com.libertad.mambu.domain.port.`in`.CreateDepositAccountUseCase
-import com.libertad.mambu.domain.port.`in`.GenerateCBAccountUseCase
-import com.libertad.mambu.domain.port.`in`.UpdateCBAccountUseCase
-import com.libertad.mambu.domain.port.out.ProductRepositoryPost
-import com.libertad.mambu.domain.port.out.RemoteClientServicePort
-import com.libertad.mambu.domain.port.out.RemoteDepositAccountServicePort
-import com.libertad.mambu.domain.port.out.RemoteProductServicePort
+import com.libertad.mambu.domain.port.`in`.*
+import com.libertad.mambu.domain.port.out.*
 import com.libertad.mambu.infrastructure.adapter.RemoteClientServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteDepositAccountServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteProductServiceAdapter
@@ -119,6 +115,16 @@ class AppConfig {
     @Bean
     fun generateCBAccountUseCase(remoteDepositAccountServicePort: RemoteDepositAccountServicePort): GenerateCBAccountUseCase {
         return GenerateCBAccountUseCaseImpl(remoteDepositAccountServicePort)
+    }
+
+    @Bean
+    fun createContractUseCase(remoteContractsServicePort: RemoteContractsServicePort): CreateContractUseCase {
+        return CreateContractUseCaseImpl(remoteContractsServicePort)
+    }
+
+    @Bean
+    fun contractsService(createContractUseCase: CreateContractUseCase): ContractsService {
+        return ContractsService(createContractUseCase)
     }
 
 
