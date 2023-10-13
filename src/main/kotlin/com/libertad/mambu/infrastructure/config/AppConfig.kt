@@ -3,10 +3,8 @@ package com.libertad.mambu.infrastructure.config
 import com.libertad.mambu.aplication.service.ClientService
 import com.libertad.mambu.aplication.service.ContractsService
 import com.libertad.mambu.aplication.service.DepositAccountService
-import com.libertad.mambu.aplication.usecases.CreateClientUseCaseImpl
-import com.libertad.mambu.aplication.usecases.CreateContractUseCaseImpl
-import com.libertad.mambu.aplication.usecases.CreateDepositAccountUseCaseImpl
-import com.libertad.mambu.aplication.usecases.GenerateCBAccountUseCaseImpl
+import com.libertad.mambu.aplication.service.OnboardingService
+import com.libertad.mambu.aplication.usecases.*
 import com.libertad.mambu.domain.port.`in`.*
 import com.libertad.mambu.domain.port.out.*
 import com.libertad.mambu.infrastructure.adapter.RemoteClientServiceAdapter
@@ -125,6 +123,25 @@ class AppConfig {
     @Bean
     fun contractsService(createContractUseCase: CreateContractUseCase): ContractsService {
         return ContractsService(createContractUseCase)
+    }
+
+    @Bean
+    fun onboardingUseCase(
+        createClientUseCase: CreateClientUseCase,
+        createDepositAccountUseCase: CreateDepositAccountUseCase,
+        generateCBAccountUseCase: GenerateCBAccountUseCase,
+        updateCBAccountUseCase: UpdateCBAccountUseCase,
+        createContractUseCase: CreateContractUseCase): OnboardingUseCase {
+        return OnboardingUseCaseImpl(createClientUseCase ,
+            createDepositAccountUseCase,
+            generateCBAccountUseCase,
+            updateCBAccountUseCase,
+            createContractUseCase)
+    }
+
+    @Bean
+    fun onboardingService(onboardingUseCase: OnboardingUseCase): OnboardingService {
+        return OnboardingService(onboardingUseCase)
     }
 
 
