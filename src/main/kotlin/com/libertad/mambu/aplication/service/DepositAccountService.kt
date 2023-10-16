@@ -29,7 +29,7 @@ class DepositAccountService(
         return generateCBAccountUseCase.generateCBAccount(data)
     }
 
-    override fun updateCBAccount(data: HashMap<String, Any>): HashMap<String, Any> {
-        return updateCBAccountUseCase.updateCBAccount(data)
+    override fun updateCBAccount(data: HashMap<String, Any>,  idAccount: String): HashMap<String, Any> {
+        return updateCBAccountUseCase.updateCBAccount(data, idAccount)
     }
 }

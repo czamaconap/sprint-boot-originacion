@@ -16,11 +16,7 @@ class RemoteContractsServiceAdapter(
             contentType = MediaType.APPLICATION_JSON
             set("Accept","application/json")
             set("X-IBM-Client-Id", "6778cad6d8edcfa7fed7de5b0bd85965")
-            //set("X-IBM-Client-Secret","");
         }
-
-        System.out.println("#################################REQUEST:\n")
-        System.out.println(data)
         val request = HttpEntity(data, headers)
         return restTemplate.postForObject(url, request, HashMap::class.java) as HashMap<String, Any>
     }
