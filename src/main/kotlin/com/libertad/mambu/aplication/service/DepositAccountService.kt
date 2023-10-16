@@ -1,5 +1,6 @@
 package com.libertad.mambu.aplication.service
 
+import com.libertad.mambu.domain.model.DepositAccount
 import com.libertad.mambu.domain.port.`in`.CreateDepositAccountUseCase
 import com.libertad.mambu.domain.port.`in`.GenerateCBAccountUseCase
 import com.libertad.mambu.domain.port.`in`.UpdateCBAccountUseCase
@@ -13,7 +14,7 @@ class DepositAccountService(
     GenerateCBAccountUseCase,
     UpdateCBAccountUseCase
 {
-    override fun createDepositAccount(data: HashMap<String, Any>): HashMap<String, Any> {
+    override fun createDepositAccount(data: DepositAccount): HashMap<String, Any> {
 
         /*
         *

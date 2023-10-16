@@ -7,7 +7,9 @@ import com.libertad.mambu.aplication.service.OnboardingService
 import com.libertad.mambu.aplication.usecases.*
 import com.libertad.mambu.domain.port.`in`.*
 import com.libertad.mambu.domain.port.out.*
+import com.libertad.mambu.domain.port.out.RemoteContractsServicePort
 import com.libertad.mambu.infrastructure.adapter.RemoteClientServiceAdapter
+import com.libertad.mambu.infrastructure.adapter.RemoteContractsServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteDepositAccountServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteProductServiceAdapter
 import com.libertad.mambu.infrastructure.persistence.repository.JpaProductorAdapter
@@ -102,17 +104,13 @@ class AppConfig {
     }
 
     @Bean
-    fun depositAccountService(
-        createDepositAccountUseCase: CreateDepositAccountUseCase,
-        generateCBAccountUseCase: GenerateCBAccountUseCase,
-        updateCBAccountUseCase: UpdateCBAccountUseCase
-    ): DepositAccountService {
-        return DepositAccountService(createDepositAccountUseCase,generateCBAccountUseCase, updateCBAccountUseCase)
+    fun generateCBAccountUseCase(remoteDepositAccountServicePort: RemoteDepositAccountServicePort): GenerateCBAccountUseCase {
+        return GenerateCBAccountUseCaseImpl(remoteDepositAccountServicePort)
     }
 
     @Bean
-    fun generateCBAccountUseCase(remoteDepositAccountServicePort: RemoteDepositAccountServicePort): GenerateCBAccountUseCase {
-        return GenerateCBAccountUseCaseImpl(remoteDepositAccountServicePort)
+    fun remoteContractsServicePort(restTemplate: RestTemplate): RemoteContractsServicePort{
+        return RemoteContractsServiceAdapter(restTemplate)
     }
 
     @Bean
@@ -132,7 +130,8 @@ class AppConfig {
         generateCBAccountUseCase: GenerateCBAccountUseCase,
         updateCBAccountUseCase: UpdateCBAccountUseCase,
         createContractUseCase: CreateContractUseCase): OnboardingUseCase {
-        return OnboardingUseCaseImpl(createClientUseCase ,
+        return OnboardingUseCaseImpl(
+            createClientUseCase,
             createDepositAccountUseCase,
             generateCBAccountUseCase,
             updateCBAccountUseCase,
@@ -144,5 +143,21 @@ class AppConfig {
         return OnboardingService(onboardingUseCase)
     }
 
+  /* @Bean
+    fun depositAccountService(
+        createDepositAccountUseCase: CreateDepositAccountUseCase,
+        generateCBAccountUseCase: GenerateCBAccountUseCase,
+        updateCBAccountUseCase: UpdateCBAccountUseCase
+    ): DepositAccountService {
+        return DepositAccountService(
+            createDepositAccountUseCase = createDepositAccountUseCase,
+            generateCBAccountUseCase = generateCBAccountUseCase,
+            updateCBAccountUseCase = updateCBAccountUseCase)
+    }*/
 
+
+    @Bean
+    fun updateCBAccountUseCase(remoteDepositAccountServicePort: RemoteDepositAccountServicePort): UpdateCBAccountUseCase {
+        return UpdateCBAccountUseCaseImpl(remoteDepositAccountServicePort)
+    }
 }

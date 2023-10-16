@@ -1,6 +1,8 @@
 package com.libertad.mambu.domain.port.`in`
 
+import com.libertad.mambu.domain.model.DepositAccount
+
 interface CreateDepositAccountUseCase {
 
-    fun createDepositAccount(data: HashMap<String, Any>): HashMap<String, Any>
+    fun createDepositAccount(data: DepositAccount): HashMap<String, Any>
 }
