@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/deposits")
-class DepositAccountController() {
-
-    private lateinit var depositAccountService: DepositAccountService
+class DepositAccountController(private val depositAccountService: DepositAccountService) {
 
     @PostMapping
     fun createDepositAccount(@RequestBody data: DepositAccount): ResponseEntity<HashMap<String, Any>> {
@@ -26,7 +24,7 @@ class DepositAccountController() {
         body(depositAccountService.updateCBAccount(data, idAccount));
     }
 
-    @PatchMapping("/cba")
+    @PostMapping("/cba")
     fun generateCBAccount(@RequestBody data: HashMap<String, Any>): ResponseEntity<HashMap<String, Any>> {
         return ResponseEntity.status(HttpStatus.SC_CREATED).
         body(depositAccountService.generateCBAccount(data));

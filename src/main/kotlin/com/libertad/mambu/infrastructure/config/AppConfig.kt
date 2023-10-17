@@ -143,7 +143,7 @@ class AppConfig {
         return OnboardingService(onboardingUseCase)
     }
 
-  /* @Bean
+   @Bean
     fun depositAccountService(
         createDepositAccountUseCase: CreateDepositAccountUseCase,
         generateCBAccountUseCase: GenerateCBAccountUseCase,
@@ -153,7 +153,7 @@ class AppConfig {
             createDepositAccountUseCase = createDepositAccountUseCase,
             generateCBAccountUseCase = generateCBAccountUseCase,
             updateCBAccountUseCase = updateCBAccountUseCase)
-    }*/
+    }
 
 
     @Bean
