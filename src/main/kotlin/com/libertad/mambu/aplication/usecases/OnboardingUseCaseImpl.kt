@@ -17,8 +17,6 @@ class OnboardingUseCaseImpl(
 ): OnboardingUseCase {
     override fun initProcess(data: HashMap<String, Any>): HashMap<String, Any> {
 
-        var generateCtaCB:HashMap<String, Any> = HashMap<String, Any>()
-
         var contract:HashMap<String, Any> = HashMap<String, Any>()
 
         var clientRes:HashMap<String, Any>?
@@ -34,6 +32,8 @@ class OnboardingUseCaseImpl(
             clientRes = createClientUseCase.createClient(data) // Paso 1
             var account: DepositAccount = llenarDepositAccount(clientRes["encodedKey"]?.toString())
             accountRes = createDepositAccountUseCase.createDepositAccount(account)// Paso 2
+
+            var generateCtaCB = generateCLABE(account.id)
             generateCtaCBRes = generateCBAccountUseCase.generateCBAccount(generateCtaCB) // Paso 3
 
             var ctaCLABE = generateCtaCBRes["ctaClabe"] as String
@@ -42,7 +42,7 @@ class OnboardingUseCaseImpl(
 
             updateCtaCBRes = updateCBAccountUseCase.updateCBAccount(reqUpdate, account.id) // Paso 4
 
-            contractRes = createContractUseCase.createContract(contract)
+           // contractRes = createContractUseCase.createContract(contract)
 
             println(prettyPrint(clientRes))
             println(prettyPrint(account))
@@ -58,7 +58,6 @@ class OnboardingUseCaseImpl(
         }
         return response
     }
-
     private fun llenarDepositAccount(accountHolderKey: String?): DepositAccount {
         var interestSettings = InterestSettings()
         interestSettings.interestRateSettings.encodedKey = "8ac982208afedfb9018b0282eced0492"

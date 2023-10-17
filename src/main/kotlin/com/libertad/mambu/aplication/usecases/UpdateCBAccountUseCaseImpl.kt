@@ -6,7 +6,8 @@ import com.libertad.mambu.domain.port.out.RemoteDepositAccountServicePort
 class UpdateCBAccountUseCaseImpl(
     private val remoteDepositAccountServicePort: RemoteDepositAccountServicePort):
     UpdateCBAccountUseCase {
-    override fun updateCBAccount(data: HashMap<String, Any>): HashMap<String, Any> {
-        return remoteDepositAccountServicePort.updateCBAccount(data)
+
+    override fun updateCBAccount(data: HashMap<String, Any>, idAccount: String): HashMap<String, Any> {
+        return remoteDepositAccountServicePort.updateCBAccount(data, idAccount)
     }
 }
