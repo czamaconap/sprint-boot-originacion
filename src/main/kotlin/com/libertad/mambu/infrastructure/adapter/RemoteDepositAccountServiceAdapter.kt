@@ -42,6 +42,26 @@ class RemoteDepositAccountServiceAdapter(
         return restTemplate.postForObject(url, request, HashMap::class.java) as HashMap<String, Any>
     }
 
+    override fun approveDepositAccount(data: HashMap<String, Any>, idAccount: String): HashMap<String, Any> {
+        val url = "${configParams.API_URL}/api/deposits/${idAccount}:changeState"
+        println(url)
+
+        val headers = HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+            set("Accept", "application/vnd.mambu.v2+json")
+            set("X-IBM-Client-Id", configParams.API_CLIENT_ID)
+            set("X-IBM-Client-Secret", configParams.API_CLIENT_SECRET)
+        }
+
+        val request = HttpEntity(data, headers)
+        val response = restTemplate.postForObject(url, request, HashMap::class.java)
+        return if(response.isNullOrEmpty()){
+            HashMap()
+        }else{
+            response as HashMap<String, Any>
+        }
+    }
+
     override fun updateCBAccount(data: HashMap<String, Any>, idAccount: String): HashMap<String, Any> {
         val url = "${configParams.API_URL}/api/deposits/${idAccount}"
         println(url)
@@ -62,4 +82,6 @@ class RemoteDepositAccountServiceAdapter(
             return response as HashMap<String, Any>
         }
     }
+
+
 }

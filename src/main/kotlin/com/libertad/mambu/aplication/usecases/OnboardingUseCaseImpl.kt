@@ -13,6 +13,7 @@ class OnboardingUseCaseImpl(
     private val createDepositAccountUseCase: CreateDepositAccountUseCase,
     private val generateCBAccountUseCase: GenerateCBAccountUseCase,
     private val updateCBAccountUseCase: UpdateCBAccountUseCase,
+    private val approveDepositAccountUseCase: ApproveDepositAccountUseCase,
     private val createContractUseCase: CreateContractUseCase
 ): OnboardingUseCase {
     override fun initProcess(data: HashMap<String, Any>): HashMap<String, Any> {
@@ -39,10 +40,15 @@ class OnboardingUseCaseImpl(
             var ctaCLABE = generateCtaCBRes["ctaClabe"] as String
             var reqUpdate  = updateAccount(ctaCLABE)
 
+            var reqAccount: HashMap<String, Any> = HashMap()
+            reqAccount["action"] = "APPROVE"
+            reqAccount["notes"] = "Aprueba cuenta"
 
             updateCtaCBRes = updateCBAccountUseCase.updateCBAccount(reqUpdate, account.id) // Paso 4
 
             contractRes = createContractUseCase.createContract(contract)// Paso 5
+
+            approveDepositAccountUseCase.approveDepositAccount(reqAccount, account.id)
 
             println(prettyPrint(clientRes))
             println(prettyPrint(account))

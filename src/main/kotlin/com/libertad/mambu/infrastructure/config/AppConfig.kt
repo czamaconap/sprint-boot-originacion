@@ -129,12 +129,14 @@ class AppConfig {
         createDepositAccountUseCase: CreateDepositAccountUseCase,
         generateCBAccountUseCase: GenerateCBAccountUseCase,
         updateCBAccountUseCase: UpdateCBAccountUseCase,
+        approveDepositAccountUseCase: ApproveDepositAccountUseCase,
         createContractUseCase: CreateContractUseCase): OnboardingUseCase {
         return OnboardingUseCaseImpl(
             createClientUseCase,
             createDepositAccountUseCase,
             generateCBAccountUseCase,
             updateCBAccountUseCase,
+            approveDepositAccountUseCase,
             createContractUseCase)
     }
 
@@ -147,17 +149,25 @@ class AppConfig {
     fun depositAccountService(
         createDepositAccountUseCase: CreateDepositAccountUseCase,
         generateCBAccountUseCase: GenerateCBAccountUseCase,
-        updateCBAccountUseCase: UpdateCBAccountUseCase
+        updateCBAccountUseCase: UpdateCBAccountUseCase,
+        approveDepositAccountUseCase: ApproveDepositAccountUseCase
     ): DepositAccountService {
         return DepositAccountService(
             createDepositAccountUseCase = createDepositAccountUseCase,
             generateCBAccountUseCase = generateCBAccountUseCase,
-            updateCBAccountUseCase = updateCBAccountUseCase)
+            updateCBAccountUseCase = updateCBAccountUseCase,
+            approveDepositAccountUseCase = approveDepositAccountUseCase
+        )
     }
 
 
     @Bean
     fun updateCBAccountUseCase(remoteDepositAccountServicePort: RemoteDepositAccountServicePort): UpdateCBAccountUseCase {
         return UpdateCBAccountUseCaseImpl(remoteDepositAccountServicePort)
+    }
+
+    @Bean
+    fun approveDepositAccountUseCase(remoteDepositAccountServicePort: RemoteDepositAccountServicePort): ApproveDepositAccountUseCase {
+        return ApproveDepositAccountUseCaseImpl(remoteDepositAccountServicePort)
     }
 }

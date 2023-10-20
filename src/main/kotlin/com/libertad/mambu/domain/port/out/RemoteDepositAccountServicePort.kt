@@ -10,4 +10,5 @@ interface RemoteDepositAccountServicePort {
 
     fun generateCBAccount(data: HashMap<String, Any>): HashMap<String, Any>
 
+    fun approveDepositAccount(data: HashMap<String, Any>, idAccount: String): HashMap<String, Any>
 }
