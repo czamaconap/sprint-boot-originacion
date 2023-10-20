@@ -12,6 +12,7 @@ import com.libertad.mambu.infrastructure.adapter.RemoteClientServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteContractsServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteDepositAccountServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteProductServiceAdapter
+import com.libertad.mambu.infrastructure.controller.MyResponseErrorHandler
 import com.libertad.mambu.infrastructure.persistence.repository.JpaProductorAdapter
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient
 import org.apache.hc.client5.http.impl.classic.HttpClients
@@ -58,7 +59,12 @@ class AppConfig {
 
         val factory = HttpComponentsClientHttpRequestFactory(httpClient)
 
-        return RestTemplate(factory)
+
+
+        val restTemplate = RestTemplate(factory)
+
+        restTemplate.errorHandler = MyResponseErrorHandler()
+        return restTemplate
     }
 
 
