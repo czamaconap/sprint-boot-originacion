@@ -34,6 +34,13 @@ class MyResponseErrorHandler(): ResponseErrorHandler {
                  //UnAuthorizedException("Unauthorized access");
              }
 
+             val ob = object {
+                 val action = "APPROVE"
+                 val notes = "aprueva cuenta"
+             }
+
+
+
              if (response.statusCode == HttpStatus.NOT_FOUND) {
 
                  println(mambuError.errors[0])
