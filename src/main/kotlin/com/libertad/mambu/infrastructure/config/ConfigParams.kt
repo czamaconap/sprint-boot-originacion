@@ -14,12 +14,15 @@ import org.springframework.context.annotation.PropertySource
 //@PropertySource("file:odc_params.properties") //Docker
 class ConfigParams(
     @Value("\${api.url}") private val apiURL: String,
+    @Value("\${api.url.contratos}") private val apiUrlContratos: String,
     @Value("\${api.client_id}") private val apiClientId: String,
     @Value("\${api.client_secret}") private val apiClientSecret: String,
 ) {
     val API_URL: String get() = apiURL
     val API_CLIENT_ID: String get() = apiClientId
     val API_CLIENT_SECRET: String get() = apiClientSecret
+
+    val API_URL_CONTRATOS: String get() = apiUrlContratos
 
     private fun decrypt(encryptedValue: String): String {
         var result: String = ""

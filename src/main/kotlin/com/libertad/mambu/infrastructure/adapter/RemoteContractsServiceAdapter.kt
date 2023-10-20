@@ -16,7 +16,8 @@ class RemoteContractsServiceAdapter(
     lateinit var configParams: ConfigParams
 
     override fun createContract(data: HashMap<String, Any>): HashMap<String, Any> {
-        val url = "${configParams.API_URL}/dynamics/v1/contratos"
+        val url = "${configParams.API_URL_CONTRATOS}"
+        println(url)
         val headers = HttpHeaders().apply {
             contentType = MediaType.APPLICATION_JSON
             set("Accept","application/json")
@@ -24,7 +25,11 @@ class RemoteContractsServiceAdapter(
             set("X-IBM-Client-Secret", configParams.API_CLIENT_SECRET)
         }
         val request = HttpEntity(data, headers)
-        return restTemplate.postForObject(url, request, HashMap::class.java) as HashMap<String, Any>
+        val response = restTemplate.postForObject(url, request, HashMap::class.java)
+        if(response.isNullOrEmpty()){
+            return HashMap()
+        }else{
+            return response as HashMap<String, Any>
+        }
     }
-
 }

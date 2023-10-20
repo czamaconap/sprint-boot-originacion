@@ -42,13 +42,12 @@ class OnboardingUseCaseImpl(
 
             updateCtaCBRes = updateCBAccountUseCase.updateCBAccount(reqUpdate, account.id) // Paso 4
 
-           // contractRes = createContractUseCase.createContract(contract)
+            contractRes = createContractUseCase.createContract(contract)// Paso 5
 
             println(prettyPrint(clientRes))
             println(prettyPrint(account))
             println(prettyPrint(accountRes))
 
-            response["account"] = account
             response["status"] = "successes"
             response["code"] = "000"
         }catch(ex: Exception) {

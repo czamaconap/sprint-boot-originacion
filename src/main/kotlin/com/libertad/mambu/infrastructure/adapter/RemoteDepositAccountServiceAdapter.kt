@@ -1,5 +1,7 @@
 package com.libertad.mambu.infrastructure.adapter
 
+import com.google.gson.Gson
+import com.libertad.mambu.aplication.util.prettyPrint
 import com.libertad.mambu.domain.model.DepositAccount
 import com.libertad.mambu.domain.port.out.RemoteDepositAccountServicePort
 import com.libertad.mambu.infrastructure.config.ConfigParams
@@ -33,21 +35,17 @@ class RemoteDepositAccountServiceAdapter(
         val url = "${configParams.API_URL}/frame-banking/generactacb"
         val headers = HttpHeaders().apply {
             contentType = MediaType.APPLICATION_JSON
-            set("Accept", "application/vnd.mambu.v2+json")
             set("X-IBM-Client-Id", configParams.API_CLIENT_ID)
             set("X-IBM-Client-Secret", configParams.API_CLIENT_SECRET)
         }
         val request = HttpEntity(data, headers)
-
-        val responseType = object : ParameterizedTypeReference<HashMap<String, Any>>() {}
-        val responseEntity: ResponseEntity<HashMap<String, Any>> =
-            restTemplate.exchange(url, HttpMethod.POST, request, responseType)
-
-        return responseEntity.body ?: HashMap()
+        return restTemplate.postForObject(url, request, HashMap::class.java) as HashMap<String, Any>
     }
 
     override fun updateCBAccount(data: HashMap<String, Any>, idAccount: String): HashMap<String, Any> {
-        val url = "${configParams.API_URL}/deposits/${idAccount}"
+        val url = "${configParams.API_URL}/api/deposits/${idAccount}"
+        println(url)
+
         val headers = HttpHeaders().apply {
             contentType = MediaType.APPLICATION_JSON
             set("Accept", "application/vnd.mambu.v2+json")
@@ -55,9 +53,13 @@ class RemoteDepositAccountServiceAdapter(
             set("X-IBM-Client-Secret", configParams.API_CLIENT_SECRET)
         }
         val reqArr = arrayListOf(data)
+        println(prettyPrint(reqArr))
         val request = HttpEntity(reqArr, headers)
-        val responseEntity: ResponseEntity<java.util.HashMap<*, *>> =
-            restTemplate.exchange(url, HttpMethod.PATCH, request, HashMap::class.java)
-        return responseEntity.body as HashMap<String, Any>
+        val response = restTemplate.patchForObject(url, request, HashMap::class.java)
+        if(response.isNullOrEmpty()){
+            return HashMap()
+        }else{
+            return response as HashMap<String, Any>
+        }
     }
 }

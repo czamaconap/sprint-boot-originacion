@@ -82,4 +82,4 @@ data class InterestRateTiers(
     var interestRate: Double = 0.0
 )
 
-data class _CBE_INTER(var _CBE_IN: String = "9486587678345675376")
+data class _CBE_INTER(var _CBE_IN: String = "00000000000")
