@@ -14,8 +14,7 @@ class OnboardingController(private val onboardingService: OnboardingService) {
 
     @PostMapping("/init")
     fun initProcess(@RequestBody data: HashMap<String, Any>): ResponseEntity<HashMap<String, Any>> {
-        return ResponseEntity.status(HttpStatus.SC_CREATED).
-        body(onboardingService.initProcess(data));
+        return onboardingService.initProcess(data)
     }
 
 }

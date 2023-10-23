@@ -7,6 +7,8 @@ import com.libertad.mambu.domain.model.DepositAccount
 import com.libertad.mambu.domain.model.InterestRateTiers
 import com.libertad.mambu.domain.model.InterestSettings
 import com.libertad.mambu.domain.port.`in`.*
+import org.apache.hc.core5.http.HttpStatus
+import org.springframework.http.ResponseEntity
 
 class OnboardingUseCaseImpl(
     private val createClientUseCase: CreateClientUseCase,
@@ -16,7 +18,7 @@ class OnboardingUseCaseImpl(
     private val approveDepositAccountUseCase: ApproveDepositAccountUseCase,
     private val createContractUseCase: CreateContractUseCase
 ): OnboardingUseCase {
-    override fun initProcess(data: HashMap<String, Any>): HashMap<String, Any> {
+    override fun initProcess(data: HashMap<String, Any>): ResponseEntity<HashMap<String, Any>> {
 
         var contract:HashMap<String, Any> = HashMap<String, Any>()
 
@@ -56,12 +58,20 @@ class OnboardingUseCaseImpl(
 
             response["status"] = "successes"
             response["code"] = "000"
+
+            return ResponseEntity.status(HttpStatus.SC_CREATED).
+            body(response);
         }catch(ex: Exception) {
             println(ex)
             response["status"] = "error"
             response["code"] = "001"
+            response["service"] = "/clients"
+            response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+
+            return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).
+            body(response);
         }
-        return response
+
     }
     private fun llenarDepositAccount(accountHolderKey: String?): DepositAccount {
         var interestSettings = InterestSettings()
