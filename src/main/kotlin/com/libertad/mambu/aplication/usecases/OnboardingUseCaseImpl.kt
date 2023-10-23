@@ -8,6 +8,7 @@ import com.libertad.mambu.domain.model.InterestRateTiers
 import com.libertad.mambu.domain.model.InterestSettings
 import com.libertad.mambu.domain.port.`in`.*
 import org.apache.hc.core5.http.HttpStatus
+import org.apache.log4j.Logger
 import org.springframework.http.ResponseEntity
 
 class OnboardingUseCaseImpl(
@@ -18,6 +19,9 @@ class OnboardingUseCaseImpl(
     private val approveDepositAccountUseCase: ApproveDepositAccountUseCase,
     private val createContractUseCase: CreateContractUseCase
 ): OnboardingUseCase {
+
+    private val LOGGER: Logger = Logger.getLogger(OnboardingUseCaseImpl::class.java)
+
     override fun initProcess(data: HashMap<String, Any>): ResponseEntity<HashMap<String, Any>> {
 
         var contract:HashMap<String, Any> = HashMap<String, Any>()
@@ -56,8 +60,12 @@ class OnboardingUseCaseImpl(
             println(prettyPrint(account))
             println(prettyPrint(accountRes))
 
+            LOGGER.info(prettyPrint(clientRes))
+
             response["status"] = "successes"
             response["code"] = "000"
+            response["clientId"]= clientRes["id"].toString()
+            //response["clientRoleKey"]= clientRes["clientRoleKey"].toString()
 
             return ResponseEntity.status(HttpStatus.SC_CREATED).
             body(response);

@@ -63,7 +63,7 @@ class AppConfig {
 
         val restTemplate = RestTemplate(factory)
 
-        restTemplate.errorHandler = MyResponseErrorHandler()
+        //restTemplate.errorHandler = MyResponseErrorHandler()
         return restTemplate
     }
 

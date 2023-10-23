@@ -1,0 +1,9 @@
+version: '3'
+services:
+  api_originacion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-originacion
+    ports:
+      - "8081:9080"

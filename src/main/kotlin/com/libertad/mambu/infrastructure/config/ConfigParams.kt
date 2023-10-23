@@ -1,7 +1,6 @@
 package com.libertad.mambu.infrastructure.config
 
 
-
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
@@ -9,9 +8,10 @@ import org.springframework.context.annotation.PropertySource
 @Configuration //@PropertySource("classpath:application.properties")
 //DEV Local
 //@PropertySource("file:/C:\\Users\\NS-714\\Documents\\workspace\\odc_params.properties")
-@PropertySource("file:/C:\\Users\\user.crea40\\Documents\\Libertad\\team_mambu\\src\\sprint-boot-originacion\\app_params.properties") //@PropertySource("file:odc_params.properties")
+//@PropertySource("file:/C:\\Users\\user.crea40\\Documents\\Libertad\\team_mambu\\src\\sprint-boot-originacion\\app_params.properties") //@PropertySource("file:odc_params.properties")
+@PropertySource("file:/C:\\Users\\user.crea41\\Documents\\proyectos\\sprint-boot-originacion\\app_params.properties") //@PropertySource("file:odc_params.properties")
 
-//@PropertySource("file:odc_params.properties") //Docker
+//@PropertySource("file:app_params.properties") //Docker
 class ConfigParams(
     @Value("\${api.url}") private val apiURL: String,
     @Value("\${api.url.contratos}") private val apiUrlContratos: String,
