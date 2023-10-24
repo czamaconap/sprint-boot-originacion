@@ -3,9 +3,7 @@ package com.libertad.mambu.aplication.usecases
 import com.libertad.mambu.aplication.util.generateRandom10DigitsString
 import com.libertad.mambu.aplication.util.generateRandom13DigitsString
 import com.libertad.mambu.aplication.util.prettyPrint
-import com.libertad.mambu.domain.model.DepositAccount
-import com.libertad.mambu.domain.model.InterestRateTiers
-import com.libertad.mambu.domain.model.InterestSettings
+import com.libertad.mambu.domain.model.*
 import com.libertad.mambu.domain.port.`in`.*
 import org.apache.hc.core5.http.HttpStatus
 import org.apache.log4j.Logger
@@ -22,22 +20,24 @@ class OnboardingUseCaseImpl(
 
     private val LOGGER: Logger = Logger.getLogger(OnboardingUseCaseImpl::class.java)
 
-    override fun initProcess(data: HashMap<String, Any>): ResponseEntity<HashMap<String, Any>> {
+    override fun initProcess(data: Client): ResponseEntity<HashMap<String, Any>> {
+        LOGGER.info("initProcess")
+        var onboarding: HashMap<String, Any>?
+        var contract:HashMap<String, Any> = HashMap()
 
-        var contract:HashMap<String, Any> = HashMap<String, Any>()
-
-        var clientRes:HashMap<String, Any>?
+        var clientRes: Client?
         var accountRes:HashMap<String, Any> ?
         var generateCtaCBRes:HashMap<String, Any> ?
         var updateCtaCBRes:HashMap<String, Any> ?
         var contractRes:HashMap<String, Any> ?
 
+        // a leo se jode el audio
 
-        var response: HashMap<String, Any> = HashMap<String, Any>()
+        var response: HashMap<String, Any> = HashMap()
         try {
 
             clientRes = createClientUseCase.createClient(data) // Paso 1
-            var account: DepositAccount = llenarDepositAccount(clientRes["encodedKey"]?.toString())
+            var account: DepositAccount = llenarDepositAccount(clientRes?.encodedKey)
             accountRes = createDepositAccountUseCase.createDepositAccount(account)// Paso 2
 
             var generateCtaCB = generateCLABE(account.id)
@@ -56,15 +56,17 @@ class OnboardingUseCaseImpl(
 
             approveDepositAccountUseCase.approveDepositAccount(reqAccount, account.id)
 
-            println(prettyPrint(clientRes))
+            LOGGER.info("Pruebaaa de loger")
+
+            println(clientRes?.let { prettyPrint(it) })
             println(prettyPrint(account))
             println(prettyPrint(accountRes))
 
-            LOGGER.info(prettyPrint(clientRes))
+            clientRes?.let { LOGGER.info(prettyPrint(it)) }
 
             response["status"] = "successes"
             response["code"] = "000"
-            response["clientId"]= clientRes["id"].toString()
+            response["clientId"]= clientRes?.id.toString()
             //response["clientRoleKey"]= clientRes["clientRoleKey"].toString()
 
             return ResponseEntity.status(HttpStatus.SC_CREATED).
@@ -123,4 +125,36 @@ class OnboardingUseCaseImpl(
         gen["sistema"] = "99"
         return gen
     }
+
+    /*private fun llenarClient(o: Client) : HashMap<String, Any>{
+        var client: HashMap<String, Any> = HashMap()
+        //client["id"] = "POC0000001174"
+        client["state"] = "INACTIVE"
+        client["creationDate"] = "2022-05-02T07:51:52-05:00"
+        client["lastModifiedDate"] = "2022-05-04T18:10:54-05:00"
+        client["firstName"] = o.firstname
+        client["lastName"] = o.lastname
+        client["preferredLanguage"] = "SPANISH"
+        client["gender"] = "MALE"
+        client["loanCycle"] = 0
+        client["groupLoanCycle"] = 0
+        client["_comment"] = "Necesario enviar id; status INACTIVE"
+        return client
+    }
+
+    private fun llenarClient2(o: Client) : HashMap<String, Any>{
+        var client: HashMap<String, Any> = HashMap()
+        client["id"] = "POC0000001174"
+        client["state"] = "INACTIVE"
+        client["creationDate"] = "2022-05-02T07:51:52-05:00"
+        client["lastModifiedDate"] = "2022-05-04T18:10:54-05:00"
+        client["firstName"] = "Leonardo"
+        client["lastName"] = "Cruz Vidal"
+        client["preferredLanguage"] = "SPANISH"
+        client["gender"] = "MALE"
+        client["loanCycle"] = 0
+        client["groupLoanCycle"] = 0
+        client["_comment"] = "Necesario enviar id; status INACTIVE"
+        return client
+    }*/
 }

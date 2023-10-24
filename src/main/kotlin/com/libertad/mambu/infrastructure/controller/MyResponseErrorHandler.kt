@@ -10,13 +10,12 @@ import java.io.IOException
 import org.springframework.http.*
 import java.nio.charset.StandardCharsets
 
-class MyResponseErrorHandler(): ResponseErrorHandler {
+class MyResponseErrorHandler : ResponseErrorHandler {
 
      @Throws(IOException::class)
      override fun hasError(response: ClientHttpResponse): Boolean {
          TODO("Not yet implemented")
-
-         return response.statusCode.isError;
+         return response.statusCode.is4xxClientError || response.statusCode.is5xxServerError
      }
      @Throws(IOException::class)
      override fun handleError(response: ClientHttpResponse) {

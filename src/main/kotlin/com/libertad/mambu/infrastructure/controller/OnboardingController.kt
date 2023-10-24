@@ -1,7 +1,9 @@
 package com.libertad.mambu.infrastructure.controller
 
 import com.libertad.mambu.aplication.service.OnboardingService
-import org.apache.hc.core5.http.HttpStatus
+import com.libertad.mambu.domain.dto.ClientRequest
+import com.libertad.mambu.domain.mapper.ClientMapper
+
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -13,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController
 class OnboardingController(private val onboardingService: OnboardingService) {
 
     @PostMapping("/init")
-    fun initProcess(@RequestBody data: HashMap<String, Any>): ResponseEntity<HashMap<String, Any>> {
-        return onboardingService.initProcess(data)
+    fun initProcess(@RequestBody data: ClientRequest): ResponseEntity<HashMap<String, Any>> {
+        return onboardingService.initProcess(ClientMapper.mapToDomain(data))
     }
 
 }
