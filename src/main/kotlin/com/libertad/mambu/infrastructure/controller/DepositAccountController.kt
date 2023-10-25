@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 class DepositAccountController(private val depositAccountService: DepositAccountService) {
 
     @PostMapping
-    fun createDepositAccount(@RequestBody data: DepositAccount): ResponseEntity<HashMap<String, Any>> {
+    fun createDepositAccount(@RequestBody data: DepositAccount): ResponseEntity<DepositAccount> {
         return ResponseEntity.status(HttpStatus.SC_CREATED).
         body(depositAccountService.createDepositAccount(data));
     }

@@ -17,14 +17,7 @@ class DepositAccountService(
     UpdateCBAccountUseCase,
     ApproveDepositAccountUseCase
 {
-    override fun createDepositAccount(data: DepositAccount): HashMap<String, Any> {
-
-        /*
-        *
-        *
-        */
-
-
+    override fun createDepositAccount(data: DepositAccount): DepositAccount? {
         return createDepositAccountUseCase.createDepositAccount(data)
     }
 

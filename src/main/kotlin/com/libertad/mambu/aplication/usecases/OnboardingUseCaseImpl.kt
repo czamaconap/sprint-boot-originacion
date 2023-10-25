@@ -28,7 +28,7 @@ class OnboardingUseCaseImpl(
         var contract:HashMap<String, Any> = HashMap()
 
         var clientRes: Client?
-        var accountRes:HashMap<String, Any> ?
+        var accountRes:DepositAccount ?
         var generateCtaCBRes:HashMap<String, Any> ?
         var updateCtaCBRes:HashMap<String, Any> ?
         var contractRes:HashMap<String, Any> ?
@@ -62,7 +62,7 @@ class OnboardingUseCaseImpl(
 
             println(clientRes?.let { prettyPrint(it) })
             println(prettyPrint(account))
-            println(prettyPrint(accountRes))
+
 
             clientRes?.let { LOGGER.info(prettyPrint(it)) }
 
