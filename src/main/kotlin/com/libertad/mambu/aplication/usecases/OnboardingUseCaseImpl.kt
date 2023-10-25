@@ -1,10 +1,12 @@
 package com.libertad.mambu.aplication.usecases
 
+import com.google.gson.annotations.SerializedName
 import com.libertad.mambu.aplication.util.generateRandom10DigitsString
 import com.libertad.mambu.aplication.util.generateRandom13DigitsString
 import com.libertad.mambu.aplication.util.prettyPrint
 import com.libertad.mambu.domain.model.*
 import com.libertad.mambu.domain.port.`in`.*
+import com.libertad.mambu.infrastructure.adapter.*
 import org.apache.hc.core5.http.HttpStatus
 import org.apache.log4j.Logger
 import org.springframework.http.ResponseEntity
@@ -50,11 +52,11 @@ class OnboardingUseCaseImpl(
             reqAccount["action"] = "APPROVE"
             reqAccount["notes"] = "Aprueba cuenta"
 
-            updateCtaCBRes = updateCBAccountUseCase.updateCBAccount(reqUpdate, account.id) // Paso 4
+            updateCtaCBRes = updateCBAccountUseCase.updateCBAccount(reqUpdate, account.id.toString()) // Paso 4
 
             contractRes = createContractUseCase.createContract(contract)// Paso 5
 
-            approveDepositAccountUseCase.approveDepositAccount(reqAccount, account.id)
+            approveDepositAccountUseCase.approveDepositAccount(reqAccount, account.id.toString())
 
             LOGGER.info("Pruebaaa de loger")
 
@@ -81,29 +83,45 @@ class OnboardingUseCaseImpl(
             return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).
             body(response);
         }
-
     }
-    private fun llenarDepositAccount(accountHolderKey: String?): DepositAccount {
-        var interestSettings = InterestSettings()
-        interestSettings.interestRateSettings.encodedKey = "8ac982208afedfb9018b0282eced0492"
-        interestSettings.interestRateSettings.interestChargeFrequency = "ANNUALIZED"
-        interestSettings.interestRateSettings.interestChargeFrequencyCount = 1
 
-        val tier1 = InterestRateTiers(
-            encodedKey = "8ac982208afedfb9018b0282eced0493",
-            endingBalance =  0.9900000000, interestRate = 0.0)
-        val tier2 = InterestRateTiers(
-            encodedKey = "8ac982208afedfb9018b0282eced0494",
-            endingBalance = 99999999.0000000000, interestRate =  9.00000000000000000000)
-
-        interestSettings.interestRateSettings.interestRateTiers = arrayOf(tier1, tier2)
-
+    private fun llenarDepositAccount(accountHolderKey: String?): DepositAccount{
         val accountId = generateRandom13DigitsString()
         return DepositAccount(
-            id= accountId,
+            id = accountId,
             name= "Cuenta n2_02 $accountId",
-            accountHolderKey = accountHolderKey,
-            interestSettings = interestSettings
+            accountHolderType = "CLIENT",
+            accountHolderKey = "DefaultHolderKey",
+            productTypeKey = "8ac981878a2b3c43018a2e72a5b3018d",
+            accountType = "CURRENT_ACCOUNT",
+            currencyCode = "MXN",
+            assignedBranchKey = "8ac983b988fc977101890301c4060084",
+            cbeInter = CBEInter(cbeIn = "00000000000"),
+            interestSettings = InterestSettings(
+                interestPaymentSettings = InterestPaymentSettings(
+                    interestPaymentPoint = "DAILY",
+                    interestPaymentDates = emptyList()
+                ),
+                interestRateSettings = InterestRateSettings(
+                    encodedKey = "8ac982208afedfb9018b0282eced0492",
+                    interestChargeFrequency = "ANNUALIZED",
+                    interestChargeFrequencyCount = 1,
+                    interestRateTiers = arrayListOf(
+                        InterestRateTiers(
+                            encodedKey = "8ac982208afedfb9018b0282eced0493",
+                            endingBalance =  0.9900000000,
+                            interestRate = 0.0
+                        ),
+                        InterestRateTiers(
+                            encodedKey = "8ac982208afedfb9018b0282eced0494",
+                            endingBalance = 99999999.0000000000,
+                            interestRate =  9.00000000000000000000
+                        )
+                    ),
+                    interestRateTerms = "TIERED",
+                    interestRateSource="FIXED_INTEREST_RATE"
+                )
+            )
         )
     }
 
@@ -117,44 +135,21 @@ class OnboardingUseCaseImpl(
         return updateCta
     }
 
-    private fun generateCLABE(idAccount: String): HashMap<String, Any> {
+    private fun generateCLABE(idAccount: String?): HashMap<String, Any> {
         var gen: HashMap<String, Any> = HashMap()
-        gen["cuenta"] = idAccount
+        gen["cuenta"] = idAccount.toString()
         gen["producto"] = "9989"
         gen["sucursal"] = "99"
         gen["sistema"] = "99"
         return gen
     }
 
-    /*private fun llenarClient(o: Client) : HashMap<String, Any>{
-        var client: HashMap<String, Any> = HashMap()
-        //client["id"] = "POC0000001174"
-        client["state"] = "INACTIVE"
-        client["creationDate"] = "2022-05-02T07:51:52-05:00"
-        client["lastModifiedDate"] = "2022-05-04T18:10:54-05:00"
-        client["firstName"] = o.firstname
-        client["lastName"] = o.lastname
-        client["preferredLanguage"] = "SPANISH"
-        client["gender"] = "MALE"
-        client["loanCycle"] = 0
-        client["groupLoanCycle"] = 0
-        client["_comment"] = "Necesario enviar id; status INACTIVE"
+    private fun llenarCliente(client: Client): Client {
+        client.preferredLanguage = "SPANISH"
+        client.gender = "MALE"
+        client.loanCycle = 0
+        client.groupLoanCycle = 0
+        client.state = "INACTIVE"
         return client
     }
-
-    private fun llenarClient2(o: Client) : HashMap<String, Any>{
-        var client: HashMap<String, Any> = HashMap()
-        client["id"] = "POC0000001174"
-        client["state"] = "INACTIVE"
-        client["creationDate"] = "2022-05-02T07:51:52-05:00"
-        client["lastModifiedDate"] = "2022-05-04T18:10:54-05:00"
-        client["firstName"] = "Leonardo"
-        client["lastName"] = "Cruz Vidal"
-        client["preferredLanguage"] = "SPANISH"
-        client["gender"] = "MALE"
-        client["loanCycle"] = 0
-        client["groupLoanCycle"] = 0
-        client["_comment"] = "Necesario enviar id; status INACTIVE"
-        return client
-    }*/
 }

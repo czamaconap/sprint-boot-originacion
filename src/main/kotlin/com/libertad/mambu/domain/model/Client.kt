@@ -23,6 +23,16 @@ data class Client(
     var clientN2: ClientN2? = null,
     @SerializedName("id")
     var id: String? = null,
+    @SerializedName("preferredLanguage")
+    var preferredLanguage:String?= null,
+    @SerializedName("gender")
+    var gender: String? = null,
+    @SerializedName("loanCycle")
+    var loanCycle: Int? = null,
+    @SerializedName("groupLoanCycle")
+    var groupLoanCycle: Int? = null,
+    @SerializedName("state")
+    var state: String? = null
 )
 
 data class ClientN2(

@@ -1,6 +1,7 @@
 package com.libertad.mambu.infrastructure.adapter
 
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import com.libertad.mambu.aplication.util.prettyPrint
 import com.libertad.mambu.domain.model.DepositAccount
 import com.libertad.mambu.domain.port.out.RemoteDepositAccountServicePort
@@ -82,6 +83,70 @@ class RemoteDepositAccountServiceAdapter(
             return response as HashMap<String, Any>
         }
     }
-
-
 }
+
+data class RemoteDepositAccount(
+    @SerializedName("id")
+    var id: String? = null,
+    @SerializedName("name")
+    var name:  String? = null,
+    @SerializedName("accountHolderType")
+    var accountHolderType:  String? = null,
+    @SerializedName("accountHolderKey")
+    var accountHolderKey:  String? = null,
+    @SerializedName("productTypeKey")
+    var productTypeKey:  String? = null,
+    @SerializedName("accountType")
+    var accountType:  String? = null,
+    @SerializedName("currencyCode")
+    var currencyCode: String? = null,
+    @SerializedName("assignedBranchKey")
+    var assignedBranchKey:  String? = null,
+    @SerializedName("interestSettings")
+    var interestSettings: RemoteInterestSettings? = null,
+    @SerializedName("_CBE_INTER")
+    var cbeInter: RemoteCBEInter? = null
+)
+
+data class RemoteInterestSettings(
+    @SerializedName("interestRateSettings")
+    var interestRateSettings: RemoteInterestRateSettings? = null,
+    @SerializedName("interestPaymentSettings")
+    var interestPaymentSettings: RemoteInterestPaymentSettings? = null
+)
+
+data class RemoteInterestRateSettings(
+    @SerializedName("encodedKey")
+    var encodedKey: String? = null,
+    @SerializedName("interestChargeFrequency")
+    var interestChargeFrequency: String? = null,
+    @SerializedName("interestChargeFrequencyCount")
+    var interestChargeFrequencyCount: Int? = null,
+    @SerializedName("interestRateTiers")
+    var interestRateTiers: List<RemoteInterestRateTiers>? = null,
+    @SerializedName("interestRateTerms")
+    var interestRateTerms: String? = null,
+    @SerializedName("interestRateSource")
+    var interestRateSource: String? = null,
+)
+
+data class RemoteInterestPaymentSettings(
+    @SerializedName("interestPaymentPoint")
+    var interestPaymentPoint: String? = null,
+    @SerializedName("interestPaymentDates")
+    var interestPaymentDates: List<Any>? = emptyList()
+)
+
+data class RemoteInterestRateTiers(
+    @SerializedName("encodedKey")
+    var encodedKey: String? = null,
+    @SerializedName("endingBalance")
+    var endingBalance: Double? = 0.0,
+    @SerializedName("interestRate")
+    var interestRate: Double? = 0.0
+)
+
+data class RemoteCBEInter(
+    @SerializedName("_CBE_IN")
+    var cbeIn: String = "00000000000"
+)
