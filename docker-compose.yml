@@ -6,4 +6,4 @@ services:
       dockerfile: Dockerfile
     container_name: api-originacion
     ports:
-      - "8081:9080"
+      - "8080:9080"

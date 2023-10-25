@@ -6,5 +6,4 @@ FROM openjdk:19-jdk-alpine
 ARG JAR_FILE=build/libs/*.jar
 COPY app_params.properties app_params.properties
 COPY --from=build /api_onboarding/build/libs/*.jar app.jar
-EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar"]
