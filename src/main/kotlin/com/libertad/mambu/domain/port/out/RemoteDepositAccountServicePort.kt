@@ -4,7 +4,7 @@ import com.libertad.mambu.domain.model.DepositAccount
 
 interface RemoteDepositAccountServicePort {
 
-    fun createDepositAccount(data: DepositAccount): HashMap<String, Any>
+    fun createDepositAccount(data: DepositAccount): DepositAccount?
 
     fun updateCBAccount(data: HashMap<String, Any>, idAccount: String): HashMap<String, Any>
 

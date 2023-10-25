@@ -6,6 +6,8 @@ import com.libertad.mambu.aplication.util.prettyPrint
 import com.libertad.mambu.domain.model.DepositAccount
 import com.libertad.mambu.domain.port.out.RemoteDepositAccountServicePort
 import com.libertad.mambu.infrastructure.config.ConfigParams
+import com.libertad.mambu.infrastructure.mapper.ClientMapper
+import com.libertad.mambu.infrastructure.mapper.DepositAccountMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.*
@@ -18,7 +20,7 @@ class RemoteDepositAccountServiceAdapter(
     @Autowired
     lateinit var configParams: ConfigParams
 
-    override fun createDepositAccount(data: DepositAccount): HashMap<String, Any> {
+    override fun createDepositAccount(data: DepositAccount): DepositAccount? {
         val url = "${configParams.API_URL}/api/deposits"
         val headers = HttpHeaders().apply {
             contentType = MediaType.APPLICATION_JSON
@@ -26,10 +28,17 @@ class RemoteDepositAccountServiceAdapter(
             set("X-IBM-Client-Id", configParams.API_CLIENT_ID)
             set("X-IBM-Client-Secret", configParams.API_CLIENT_SECRET)
         }
-        val request = HttpEntity(data, headers)
-        val responseEntity: ResponseEntity<java.util.HashMap<*, *>> =
-            restTemplate.exchange(url, HttpMethod.POST, request, HashMap::class.java)
-        return responseEntity.body as HashMap<String, Any>
+
+        val request = HttpEntity(DepositAccountMapper.mapToRemote(data), headers)
+        val responseEntity: ResponseEntity<RemoteDepositAccount> = restTemplate.exchange(
+            url,
+            HttpMethod.POST,
+            request,
+            RemoteDepositAccount::class.java
+        )
+        return responseEntity.body?.let {
+            DepositAccountMapper.mapToDomain(it)
+        }
     }
 
     override fun generateCBAccount(data: HashMap<String, Any>): HashMap<String, Any> {
