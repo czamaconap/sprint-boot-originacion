@@ -43,6 +43,7 @@ class ClientMapper {
         fun mapToDomain(remote: RemoteClient): DomainClient {
             return DomainClient(
                 id = remote.id,
+                encodedKey = remote.encodedKey,
                 firstName = remote.firstName,
                 middleName = remote.middleName,
                 lastName = remote.lastName,

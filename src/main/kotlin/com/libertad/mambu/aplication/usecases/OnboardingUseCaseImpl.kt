@@ -52,7 +52,7 @@ class OnboardingUseCaseImpl(
 
             updateCtaCBRes = updateCBAccountUseCase.updateCBAccount(reqUpdate, account.id.toString()) // Paso 4
 
-            contractRes = createContractUseCase.createContract(contract)// Paso 5
+            //contractRes = createContractUseCase.createContract(contract)// Paso 5
 
             approveDepositAccountUseCase.approveDepositAccount(reqAccount, account.id.toString())
 
