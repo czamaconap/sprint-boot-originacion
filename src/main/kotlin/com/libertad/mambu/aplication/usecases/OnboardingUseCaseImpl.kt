@@ -36,6 +36,7 @@ class OnboardingUseCaseImpl(
         try {
 
             clientRes = createClientUseCase.createClient(data) // Paso 1
+            println(clientRes)
             var account: DepositAccount = llenarDepositAccount(clientRes?.encodedKey)
             accountRes = createDepositAccountUseCase.createDepositAccount(account)// Paso 2
 
@@ -88,7 +89,7 @@ class OnboardingUseCaseImpl(
             id = accountId,
             name= "Cuenta n2_02 $accountId",
             accountHolderType = "CLIENT",
-            accountHolderKey = "DefaultHolderKey",
+            accountHolderKey = accountHolderKey,
             productTypeKey = "8ac981878a2b3c43018a2e72a5b3018d",
             accountType = "CURRENT_ACCOUNT",
             currencyCode = "MXN",

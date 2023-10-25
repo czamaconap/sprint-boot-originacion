@@ -30,7 +30,7 @@ class ClientMapper {
                     curp = dto.rs_curp,
                     rfc = dto.rs_rfc
                 ),
-                id = dto.rs_numerocuenta
+                id = dto.rs_numerocliente
             )
         }
     }
