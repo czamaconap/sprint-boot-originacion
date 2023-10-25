@@ -53,7 +53,7 @@ data class RemoteClient(
     @SerializedName("birthDate") var birthDate: String? = null,
     @SerializedName("mobilePhone") var mobilePhone: String? = null,
     @SerializedName("emailAddress") var emailAddress: String? = null,
-    @SerializedName("address") var address: List<RemoteAddress>? = emptyList(),
+    @SerializedName("addresses") var addresses: List<RemoteAddress>? = emptyList(),
     @SerializedName("_Clientes_N2") var clientN2: RemoteClientN2? = null,
     @SerializedName("id") var id: String? = null,
 )

@@ -8,8 +8,8 @@ import org.springframework.context.annotation.PropertySource
 @Configuration //@PropertySource("classpath:application.properties")
 //DEV Local
 //@PropertySource("file:/C:\\Users\\NS-714\\Documents\\workspace\\odc_params.properties")
-//@PropertySource("file:/C:\\Users\\user.crea40\\Documents\\Libertad\\team_mambu\\src\\sprint-boot-originacion\\app_params.properties") //@PropertySource("file:odc_params.properties")
-@PropertySource("file:/C:\\Users\\user.crea41\\Documents\\proyectos\\sprint-boot-originacion\\app_params.properties") //@PropertySource("file:odc_params.properties")
+@PropertySource("file:/C:\\Users\\user.crea40\\Documents\\Libertad\\team_mambu\\src\\sprint-boot-originacion\\app_params.properties") //@PropertySource("file:odc_params.properties")
+//@PropertySource("file:/C:\\Users\\user.crea41\\Documents\\proyectos\\sprint-boot-originacion\\app_params.properties") //@PropertySource("file:odc_params.properties")
 
 //@PropertySource("file:app_params.properties") //Docker
 class ConfigParams(
