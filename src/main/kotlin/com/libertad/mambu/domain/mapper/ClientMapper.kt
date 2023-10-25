@@ -4,9 +4,6 @@ import com.libertad.mambu.domain.dto.ClientRequest
 import com.libertad.mambu.domain.model.Address
 import com.libertad.mambu.domain.model.ClientN2
 import com.libertad.mambu.domain.model.Client as DomainClient
-import com.libertad.mambu.infrastructure.adapter.RemoteAddress
-import com.libertad.mambu.infrastructure.adapter.RemoteClient
-import com.libertad.mambu.infrastructure.adapter.RemoteClientN2
 
 class ClientMapper {
 

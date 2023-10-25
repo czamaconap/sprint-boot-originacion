@@ -1,5 +1,6 @@
 package com.libertad.mambu.infrastructure.config
 
+import com.google.gson.Gson
 import com.libertad.mambu.aplication.service.ClientService
 import com.libertad.mambu.aplication.service.ContractsService
 import com.libertad.mambu.aplication.service.DepositAccountService
@@ -12,17 +13,21 @@ import com.libertad.mambu.infrastructure.adapter.RemoteClientServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteContractsServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteDepositAccountServiceAdapter
 import com.libertad.mambu.infrastructure.adapter.RemoteProductServiceAdapter
-import com.libertad.mambu.infrastructure.controller.MyResponseErrorHandler
 import com.libertad.mambu.infrastructure.persistence.repository.JpaProductorAdapter
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient
 import org.apache.hc.client5.http.impl.classic.HttpClients
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder
 import org.apache.hc.client5.http.ssl.NoopHostnameVerifier
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory
+import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
+import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.http.converter.json.GsonHttpMessageConverter
+import org.springframework.http.converter.json.KotlinSerializationJsonHttpMessageConverter
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
@@ -30,10 +35,10 @@ import javax.net.ssl.X509TrustManager
 
 
 @Configuration
-class AppConfig {
+class AppConfig : WebMvcConfigurer {
 
     @Bean
-    fun restTemplate(): RestTemplate {
+    fun restTemplate(gsonHttpMessageConverter : HttpMessageConverter<*>): RestTemplate {
         val trustAllCertificates = arrayOf<TrustManager>(
             object : X509TrustManager {
                 override fun getAcceptedIssuers(): Array<X509Certificate?> = arrayOfNulls(0)
@@ -60,9 +65,8 @@ class AppConfig {
         val factory = HttpComponentsClientHttpRequestFactory(httpClient)
 
 
-
         val restTemplate = RestTemplate(factory)
-
+        restTemplate.messageConverters = arrayListOf(gsonHttpMessageConverter)
         //restTemplate.errorHandler = MyResponseErrorHandler()
         return restTemplate
     }
@@ -175,5 +179,14 @@ class AppConfig {
     @Bean
     fun approveDepositAccountUseCase(remoteDepositAccountServicePort: RemoteDepositAccountServicePort): ApproveDepositAccountUseCase {
         return ApproveDepositAccountUseCaseImpl(remoteDepositAccountServicePort)
+    }
+
+    @Bean
+    fun gsonHttpMessageConverter(): HttpMessageConverter<*> {
+        return GsonHttpMessageConverter()
+    }
+
+    override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
+        converters.add(gsonHttpMessageConverter())
     }
 }

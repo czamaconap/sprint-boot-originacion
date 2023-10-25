@@ -16,6 +16,8 @@ class OnboardingController(private val onboardingService: OnboardingService) {
 
     @PostMapping("/init")
     fun initProcess(@RequestBody data: ClientRequest): ResponseEntity<HashMap<String, Any>> {
+        println(ClientMapper.mapToDomain(data))
+
         return onboardingService.initProcess(ClientMapper.mapToDomain(data))
     }
 

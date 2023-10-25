@@ -93,7 +93,7 @@ class OnboardingUseCaseImpl(
             accountType = "CURRENT_ACCOUNT",
             currencyCode = "MXN",
             assignedBranchKey = "8ac983b988fc977101890301c4060084",
-            _CBE_INTER = CbeInter(_CBE_IN = "00000000000"),
+            cbeInter = CbeInter(cbeIn = "00000000000"),
             interestSettings = InterestSettings(
                 interestPaymentSettings = InterestPaymentSettings(
                     interestPaymentPoint = "DAILY",

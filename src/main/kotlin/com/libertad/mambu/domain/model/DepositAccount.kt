@@ -1,47 +1,64 @@
 package com.libertad.mambu.domain.model
 
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.Serializable
 
-@Serializable
 data class DepositAccount(
-    @SerializedName("id") val id: String?,
-    @SerializedName("name") val name: String?,
-    @SerializedName("accountHolderType") val accountHolderType: String?,
-    @SerializedName("accountHolderKey") val accountHolderKey: String?,
-    @SerializedName("productTypeKey") val productTypeKey: String?,
-    @SerializedName("accountType") val accountType: String?,
-    @SerializedName("currencyCode") val currencyCode: String?,
-    @SerializedName("assignedBranchKey") val assignedBranchKey: String?,
-    @SerializedName("interestSettings") val interestSettings: InterestSettings?,
-    @SerializedName("_CBE_INTER") val _CBE_INTER: CbeInter?
+    @SerializedName("id")
+    var id: String?= null,
+    @SerializedName("name")
+    var name: String?= null,
+    @SerializedName("accountHolderType")
+    var accountHolderType: String?= null,
+    @SerializedName("accountHolderKey")
+    var accountHolderKey: String?= null,
+    @SerializedName("productTypeKey")
+    var productTypeKey: String?= null,
+    @SerializedName("accountType")
+    var accountType: String?= null,
+    @SerializedName("currencyCode")
+    var currencyCode: String?= null,
+    @SerializedName("assignedBranchKey")
+    var assignedBranchKey: String?= null,
+    @SerializedName("interestSettings")
+    var interestSettings: InterestSettings?= null,
+    @SerializedName("_CBE_INTER")
+    var cbeInter: CbeInter? = null
 )
-@Serializable
 data class InterestSettings(
-    @SerializedName("interestRateSettings") val interestRateSettings: InterestRateSettings?,
-    @SerializedName("interestPaymentSettings") val interestPaymentSettings: InterestPaymentSettings?
+    @SerializedName("interestRateSettings")
+    var interestRateSettings: InterestRateSettings? = null,
+    @SerializedName("interestPaymentSettings")
+    var interestPaymentSettings: InterestPaymentSettings?  = null
 )
-@Serializable
 data class InterestRateSettings(
-    @SerializedName("encodedKey") val encodedKey: String?,
-    @SerializedName("interestChargeFrequency") val interestChargeFrequency: String?,
-    @SerializedName("interestChargeFrequencyCount") val interestChargeFrequencyCount: Int?,
-    @SerializedName("interestRateTiers") val interestRateTiers: List<InterestRateTier>?,
-    @SerializedName("interestRateTerms") val interestRateTerms: String?,
-    @SerializedName("interestRateSource") val interestRateSource: String?
+    @SerializedName("encodedKey")
+    var encodedKey: String?  = null,
+    @SerializedName("interestChargeFrequency")
+    var interestChargeFrequency: String?  = null,
+    @SerializedName("interestChargeFrequencyCount")
+    var interestChargeFrequencyCount: Int?  = null,
+    @SerializedName("interestRateTiers")
+    var interestRateTiers: List<InterestRateTier>?  = null,
+    @SerializedName("interestRateTerms")
+    var interestRateTerms: String?  = null,
+    @SerializedName("interestRateSource")
+    var interestRateSource: String?  = null
 )
-@Serializable
 data class InterestRateTier(
-    @SerializedName("encodedKey") val encodedKey: String?,
-    @SerializedName("endingBalance") val endingBalance: Double?,
-    @SerializedName("interestRate") val interestRate: Double?
+    @SerializedName("encodedKey")
+    var encodedKey: String?  = null,
+    @SerializedName("endingBalance")
+    var endingBalance: Double?  = null,
+    @SerializedName("interestRate")
+    var interestRate: Double?  = null
 )
-@Serializable
 data class InterestPaymentSettings(
-    @SerializedName("interestPaymentPoint") val interestPaymentPoint: String?,
-    @SerializedName("interestPaymentDates") val interestPaymentDates: List<String>?
+    @SerializedName("interestPaymentPoint")
+    var interestPaymentPoint: String?  = null,
+    @SerializedName("interestPaymentDates")
+    var interestPaymentDates: List<String>?  = null
 )
-@Serializable
 data class CbeInter(
-    @SerializedName("_CBE_IN") val _CBE_IN: String?
+    @SerializedName("_CBE_IN")
+    var cbeIn: String?  = null
 )

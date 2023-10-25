@@ -11,7 +11,7 @@ import org.springframework.http.*
 import org.springframework.web.client.RestTemplate
 
 class RemoteDepositAccountServiceAdapter(
-    private val restTemplate: RestTemplate
+    private var restTemplate: RestTemplate
 ) : RemoteDepositAccountServicePort {
 
     @Autowired
@@ -96,43 +96,67 @@ class RemoteDepositAccountServiceAdapter(
 }
 
 data class RemoteDepositAccount(
-    @SerializedName("id") val id: String?,
-    @SerializedName("name") val name: String?,
-    @SerializedName("accountHolderType") val accountHolderType: String?,
-    @SerializedName("accountHolderKey") val accountHolderKey: String?,
-    @SerializedName("productTypeKey") val productTypeKey: String?,
-    @SerializedName("accountType") val accountType: String?,
-    @SerializedName("currencyCode") val currencyCode: String?,
-    @SerializedName("assignedBranchKey") val assignedBranchKey: String?,
-    @SerializedName("interestSettings") val interestSettings: RemoteInterestSettings?,
-    @SerializedName("_CBE_INTER") val _CBE_INTER: RemoteCbeInter?
+    @SerializedName("id")
+    var id: String?,
+    @SerializedName("name")
+    var name: String?,
+    @SerializedName("accountHolderType")
+    var accountHolderType: String?,
+    @SerializedName("accountHolderKey")
+    var accountHolderKey: String?,
+    @SerializedName("productTypeKey")
+    var productTypeKey: String?,
+    @SerializedName("accountType")
+    var accountType: String?,
+    @SerializedName("currencyCode")
+    var currencyCode: String?,
+    @SerializedName("assignedBranchKey")
+    var assignedBranchKey: String?,
+    @SerializedName("interestSettings")
+    var interestSettings: RemoteInterestSettings?,
+    @SerializedName("_CBE_INTER") 
+    var cbeInter: RemoteCbeInter?
 )
 
 data class RemoteInterestSettings(
-    @SerializedName("interestRateSettings") val interestRateSettings: RemoteInterestRateSettings?,
-    @SerializedName("interestPaymentSettings") val interestPaymentSettings: RemoteInterestPaymentSettings?
+    @SerializedName("interestRateSettings")
+    var interestRateSettings: RemoteInterestRateSettings?,
+    @SerializedName("interestPaymentSettings")
+    var interestPaymentSettings: RemoteInterestPaymentSettings?
 )
 
 data class RemoteInterestRateSettings(
-    @SerializedName("encodedKey") val encodedKey: String?,
-    @SerializedName("interestChargeFrequency") val interestChargeFrequency: String?,
-    @SerializedName("interestChargeFrequencyCount") val interestChargeFrequencyCount: Int?,
-    @SerializedName("interestRateTiers") val interestRateTiers: List<RemoteInterestRateTier>?,
-    @SerializedName("interestRateTerms") val interestRateTerms: String?,
-    @SerializedName("interestRateSource") val interestRateSource: String?
+    @SerializedName("encodedKey")
+    var encodedKey: String?,
+    @SerializedName("interestChargeFrequency")
+    var interestChargeFrequency: String?,
+    @SerializedName("interestChargeFrequencyCount")
+    var interestChargeFrequencyCount: Int?,
+    @SerializedName("interestRateTiers")
+    var interestRateTiers: List<RemoteInterestRateTier>?,
+    @SerializedName("interestRateTerms")
+    var interestRateTerms: String?,
+    @SerializedName("interestRateSource")
+    var interestRateSource: String?
 )
 
 data class RemoteInterestRateTier(
-    @SerializedName("encodedKey") val encodedKey: String?,
-    @SerializedName("endingBalance") val endingBalance: Double?,
-    @SerializedName("interestRate") val interestRate: Double?
+    @SerializedName("encodedKey")
+    var encodedKey: String?,
+    @SerializedName("endingBalance")
+    var endingBalance: Double?,
+    @SerializedName("interestRate")
+    var interestRate: Double?
 )
 
 data class RemoteInterestPaymentSettings(
-    @SerializedName("interestPaymentPoint") val interestPaymentPoint: String?,
-    @SerializedName("interestPaymentDates") val interestPaymentDates: List<String>?
+    @SerializedName("interestPaymentPoint")
+    var interestPaymentPoint: String?,
+    @SerializedName("interestPaymentDates")
+    var interestPaymentDates: List<String>?
 )
 
 data class RemoteCbeInter(
-    @SerializedName("_CBE_IN") val _CBE_IN: String?
+    @SerializedName("_CBE_IN")
+    var cbeIn: String?
 )
