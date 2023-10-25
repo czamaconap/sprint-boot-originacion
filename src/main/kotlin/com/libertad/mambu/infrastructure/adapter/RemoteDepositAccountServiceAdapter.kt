@@ -1,15 +1,12 @@
 package com.libertad.mambu.infrastructure.adapter
 
-import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.libertad.mambu.aplication.util.prettyPrint
 import com.libertad.mambu.domain.model.DepositAccount
 import com.libertad.mambu.domain.port.out.RemoteDepositAccountServicePort
 import com.libertad.mambu.infrastructure.config.ConfigParams
-import com.libertad.mambu.infrastructure.mapper.ClientMapper
 import com.libertad.mambu.infrastructure.mapper.DepositAccountMapper
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.*
 import org.springframework.web.client.RestTemplate
 
@@ -29,7 +26,11 @@ class RemoteDepositAccountServiceAdapter(
             set("X-IBM-Client-Secret", configParams.API_CLIENT_SECRET)
         }
 
-        val request = HttpEntity(DepositAccountMapper.mapToRemote(data), headers)
+        val remoteDepositAccount = DepositAccountMapper.mapToRemote(data)
+
+        println(prettyPrint(data))
+        println(prettyPrint(remoteDepositAccount))
+        val request = HttpEntity(remoteDepositAccount, headers)
         val responseEntity: ResponseEntity<RemoteDepositAccount> = restTemplate.exchange(
             url,
             HttpMethod.POST,
@@ -95,67 +96,43 @@ class RemoteDepositAccountServiceAdapter(
 }
 
 data class RemoteDepositAccount(
-    @SerializedName("id")
-    var id: String? = null,
-    @SerializedName("name")
-    var name:  String? = null,
-    @SerializedName("accountHolderType")
-    var accountHolderType:  String? = null,
-    @SerializedName("accountHolderKey")
-    var accountHolderKey:  String? = null,
-    @SerializedName("productTypeKey")
-    var productTypeKey:  String? = null,
-    @SerializedName("accountType")
-    var accountType:  String? = null,
-    @SerializedName("currencyCode")
-    var currencyCode: String? = null,
-    @SerializedName("assignedBranchKey")
-    var assignedBranchKey:  String? = null,
-    @SerializedName("interestSettings")
-    var interestSettings: RemoteInterestSettings? = null,
-    @SerializedName("_CBE_INTER")
-    var cbeInter: RemoteCBEInter? = null
+    @SerializedName("id") val id: String?,
+    @SerializedName("name") val name: String?,
+    @SerializedName("accountHolderType") val accountHolderType: String?,
+    @SerializedName("accountHolderKey") val accountHolderKey: String?,
+    @SerializedName("productTypeKey") val productTypeKey: String?,
+    @SerializedName("accountType") val accountType: String?,
+    @SerializedName("currencyCode") val currencyCode: String?,
+    @SerializedName("assignedBranchKey") val assignedBranchKey: String?,
+    @SerializedName("interestSettings") val interestSettings: RemoteInterestSettings?,
+    @SerializedName("_CBE_INTER") val cbeInter: RemoteCbeInter?
 )
 
 data class RemoteInterestSettings(
-    @SerializedName("interestRateSettings")
-    var interestRateSettings: RemoteInterestRateSettings? = null,
-    @SerializedName("interestPaymentSettings")
-    var interestPaymentSettings: RemoteInterestPaymentSettings? = null
+    @SerializedName("interestRateSettings") val interestRateSettings: RemoteInterestRateSettings?,
+    @SerializedName("interestPaymentSettings") val interestPaymentSettings: RemoteInterestPaymentSettings?
 )
 
 data class RemoteInterestRateSettings(
-    @SerializedName("encodedKey")
-    var encodedKey: String? = null,
-    @SerializedName("interestChargeFrequency")
-    var interestChargeFrequency: String? = null,
-    @SerializedName("interestChargeFrequencyCount")
-    var interestChargeFrequencyCount: Int? = null,
-    @SerializedName("interestRateTiers")
-    var interestRateTiers: List<RemoteInterestRateTiers>? = null,
-    @SerializedName("interestRateTerms")
-    var interestRateTerms: String? = null,
-    @SerializedName("interestRateSource")
-    var interestRateSource: String? = null,
+    @SerializedName("encodedKey") val encodedKey: String?,
+    @SerializedName("interestChargeFrequency") val interestChargeFrequency: String?,
+    @SerializedName("interestChargeFrequencyCount") val interestChargeFrequencyCount: Int?,
+    @SerializedName("interestRateTiers") val interestRateTiers: List<RemoteInterestRateTier>?,
+    @SerializedName("interestRateTerms") val interestRateTerms: String?,
+    @SerializedName("interestRateSource") val interestRateSource: String?
+)
+
+data class RemoteInterestRateTier(
+    @SerializedName("encodedKey") val encodedKey: String?,
+    @SerializedName("endingBalance") val endingBalance: Double?,
+    @SerializedName("interestRate") val interestRate: Double?
 )
 
 data class RemoteInterestPaymentSettings(
-    @SerializedName("interestPaymentPoint")
-    var interestPaymentPoint: String? = null,
-    @SerializedName("interestPaymentDates")
-    var interestPaymentDates: List<Any>? = emptyList()
+    @SerializedName("interestPaymentPoint") val interestPaymentPoint: String?,
+    @SerializedName("interestPaymentDates") val interestPaymentDates: List<String>?
 )
 
-data class RemoteInterestRateTiers(
-    @SerializedName("encodedKey")
-    var encodedKey: String? = null,
-    @SerializedName("endingBalance")
-    var endingBalance: Double? = 0.0,
-    @SerializedName("interestRate")
-    var interestRate: Double? = 0.0
-)
-
-data class RemoteCBEInter(
-    @SerializedName("_CBE_IN")
-    var cbeIn: String = "00000000000"
+data class RemoteCbeInter(
+    @SerializedName("_CBE_IN") val cbeIn: String?
 )

@@ -2,8 +2,6 @@ package com.libertad.mambu.infrastructure.controller
 
 import com.libertad.mambu.aplication.service.DepositAccountService
 import com.libertad.mambu.domain.model.DepositAccount
-import com.libertad.mambu.domain.model.InterestRateTiers
-import com.libertad.mambu.domain.model.InterestSettings
 import org.apache.hc.core5.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -28,6 +26,12 @@ class DepositAccountController(private val depositAccountService: DepositAccount
     fun generateCBAccount(@RequestBody data: HashMap<String, Any>): ResponseEntity<HashMap<String, Any>> {
         return ResponseEntity.status(HttpStatus.SC_CREATED).
         body(depositAccountService.generateCBAccount(data));
+    }
+
+    @PostMapping("/prueba")
+    fun prueba(@RequestBody data: DepositAccount): ResponseEntity<DepositAccount> {
+        return ResponseEntity.status(HttpStatus.SC_CREATED).
+        body(data);
     }
 
 }

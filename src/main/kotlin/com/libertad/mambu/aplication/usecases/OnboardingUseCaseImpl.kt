@@ -96,7 +96,7 @@ class OnboardingUseCaseImpl(
             accountType = "CURRENT_ACCOUNT",
             currencyCode = "MXN",
             assignedBranchKey = "8ac983b988fc977101890301c4060084",
-            cbeInter = CBEInter(cbeIn = "00000000000"),
+            cbeInter = CbeInter(cbeIn = "00000000000"),
             interestSettings = InterestSettings(
                 interestPaymentSettings = InterestPaymentSettings(
                     interestPaymentPoint = "DAILY",
@@ -107,12 +107,12 @@ class OnboardingUseCaseImpl(
                     interestChargeFrequency = "ANNUALIZED",
                     interestChargeFrequencyCount = 1,
                     interestRateTiers = arrayListOf(
-                        InterestRateTiers(
+                        InterestRateTier(
                             encodedKey = "8ac982208afedfb9018b0282eced0493",
                             endingBalance =  0.9900000000,
                             interestRate = 0.0
                         ),
-                        InterestRateTiers(
+                        InterestRateTier(
                             encodedKey = "8ac982208afedfb9018b0282eced0494",
                             endingBalance = 99999999.0000000000,
                             interestRate =  9.00000000000000000000

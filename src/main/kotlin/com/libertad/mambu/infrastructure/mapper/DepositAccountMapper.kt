@@ -25,13 +25,9 @@ class DepositAccountMapper {
                                 encodedKey = it2.encodedKey,
                                 interestChargeFrequency = it2.interestChargeFrequency,
                                 interestChargeFrequencyCount = it2.interestChargeFrequencyCount,
-                                interestRateTiers = it2.interestRateTiers?.let { it3 ->
-                                    it3.map { it4 ->
-                                        RemoteInterestRateTiers(
-                                            encodedKey = it4.encodedKey,
-                                            endingBalance = it4.endingBalance,
-                                            interestRate = it4.interestRate
-                                        )
+                                interestRateTiers = it2.interestRateTiers?.let { it3->
+                                    it3.map { it4->
+                                        RemoteInterestRateTier(it4.encodedKey,it4.endingBalance,it4.interestRate)
                                     }
                                 },
                                 interestRateTerms = it2.interestRateTerms,
@@ -42,14 +38,14 @@ class DepositAccountMapper {
                             RemoteInterestPaymentSettings(
                                 interestPaymentPoint = it2.interestPaymentPoint,
                                 interestPaymentDates = it2.interestPaymentDates?.let { it3 ->
-                                    arrayListOf(it3)
+                                    ArrayList(it3)
                                 }
                             )
                         }
                     )
                 },
                 cbeInter = domain.cbeInter?.let {
-                    it.cbeIn?.let { it1 -> RemoteCBEInter(cbeIn = it1) }
+                    RemoteCbeInter(it.cbeIn)
                 }
             )
         }
@@ -64,20 +60,16 @@ class DepositAccountMapper {
                 accountType = remote.accountType,
                 currencyCode = remote.currencyCode,
                 assignedBranchKey = remote.assignedBranchKey,
-                interestSettings = remote.interestSettings?.let {
+                interestSettings = remote.interestSettings?.let { it ->
                     InterestSettings(
                         interestRateSettings = it.interestRateSettings?.let { it2 ->
                             InterestRateSettings(
                                 encodedKey = it2.encodedKey,
                                 interestChargeFrequency = it2.interestChargeFrequency,
                                 interestChargeFrequencyCount = it2.interestChargeFrequencyCount,
-                                interestRateTiers = it2.interestRateTiers?.let { it3 ->
-                                    it3.map { it4 ->
-                                        InterestRateTiers(
-                                            encodedKey = it4.encodedKey,
-                                            endingBalance = it4.endingBalance,
-                                            interestRate = it4.interestRate
-                                        )
+                                interestRateTiers = it2.interestRateTiers?.let { it3->
+                                    it3.map { it4->
+                                        InterestRateTier(it4.encodedKey,it4.endingBalance,it4.interestRate)
                                     }
                                 },
                                 interestRateTerms = it2.interestRateTerms,
@@ -88,14 +80,14 @@ class DepositAccountMapper {
                             InterestPaymentSettings(
                                 interestPaymentPoint = it2.interestPaymentPoint,
                                 interestPaymentDates = it2.interestPaymentDates?.let { it3 ->
-                                    arrayListOf(it3)
+                                    ArrayList(it3)
                                 }
                             )
                         }
                     )
                 },
                 cbeInter = remote.cbeInter?.let {
-                    CBEInter(cbeIn = it.cbeIn)
+                    CbeInter(it.cbeIn)
                 }
             )
         }
