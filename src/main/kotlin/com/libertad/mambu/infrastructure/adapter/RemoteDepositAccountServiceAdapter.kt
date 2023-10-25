@@ -66,9 +66,9 @@ class RemoteDepositAccountServiceAdapter(
 
         val request = HttpEntity(data, headers)
         val response = restTemplate.postForObject(url, request, HashMap::class.java)
-        return if(response.isNullOrEmpty()){
+        return if (response.isNullOrEmpty()) {
             HashMap()
-        }else{
+        } else {
             response as HashMap<String, Any>
         }
     }
@@ -87,76 +87,52 @@ class RemoteDepositAccountServiceAdapter(
         println(prettyPrint(reqArr))
         val request = HttpEntity(reqArr, headers)
         val response = restTemplate.patchForObject(url, request, HashMap::class.java)
-        if(response.isNullOrEmpty()){
+        if (response.isNullOrEmpty()) {
             return HashMap()
-        }else{
+        } else {
             return response as HashMap<String, Any>
         }
     }
 }
 
 data class RemoteDepositAccount(
-    @SerializedName("id")
-    var id: String?,
-    @SerializedName("name")
-    var name: String?,
-    @SerializedName("accountHolderType")
-    var accountHolderType: String?,
-    @SerializedName("accountHolderKey")
-    var accountHolderKey: String?,
-    @SerializedName("productTypeKey")
-    var productTypeKey: String?,
-    @SerializedName("accountType")
-    var accountType: String?,
-    @SerializedName("currencyCode")
-    var currencyCode: String?,
-    @SerializedName("assignedBranchKey")
-    var assignedBranchKey: String?,
-    @SerializedName("interestSettings")
-    var interestSettings: RemoteInterestSettings?,
-    @SerializedName("_CBE_INTER") 
-    var cbeInter: RemoteCbeInter?
+    @SerializedName("id") var id: String?,
+    @SerializedName("name") var name: String?,
+    @SerializedName("accountHolderType") var accountHolderType: String?,
+    @SerializedName("accountHolderKey") var accountHolderKey: String?,
+    @SerializedName("productTypeKey") var productTypeKey: String?,
+    @SerializedName("accountType") var accountType: String?,
+    @SerializedName("currencyCode") var currencyCode: String?,
+    @SerializedName("assignedBranchKey") var assignedBranchKey: String?,
+    @SerializedName("interestSettings") var interestSettings: RemoteInterestSettings?,
+    @SerializedName("_CBE_INTER") var cbeInter: RemoteCbeInter?
 )
 
 data class RemoteInterestSettings(
-    @SerializedName("interestRateSettings")
-    var interestRateSettings: RemoteInterestRateSettings?,
-    @SerializedName("interestPaymentSettings")
-    var interestPaymentSettings: RemoteInterestPaymentSettings?
+    @SerializedName("interestRateSettings") var interestRateSettings: RemoteInterestRateSettings?,
+    @SerializedName("interestPaymentSettings") var interestPaymentSettings: RemoteInterestPaymentSettings?
 )
 
 data class RemoteInterestRateSettings(
-    @SerializedName("encodedKey")
-    var encodedKey: String?,
-    @SerializedName("interestChargeFrequency")
-    var interestChargeFrequency: String?,
-    @SerializedName("interestChargeFrequencyCount")
-    var interestChargeFrequencyCount: Int?,
-    @SerializedName("interestRateTiers")
-    var interestRateTiers: List<RemoteInterestRateTier>?,
-    @SerializedName("interestRateTerms")
-    var interestRateTerms: String?,
-    @SerializedName("interestRateSource")
-    var interestRateSource: String?
+    @SerializedName("encodedKey") var encodedKey: String?,
+    @SerializedName("interestChargeFrequency") var interestChargeFrequency: String?,
+    @SerializedName("interestChargeFrequencyCount") var interestChargeFrequencyCount: Int?,
+    @SerializedName("interestRateTiers") var interestRateTiers: List<RemoteInterestRateTier>?,
+    @SerializedName("interestRateTerms") var interestRateTerms: String?,
+    @SerializedName("interestRateSource") var interestRateSource: String?
 )
 
 data class RemoteInterestRateTier(
-    @SerializedName("encodedKey")
-    var encodedKey: String?,
-    @SerializedName("endingBalance")
-    var endingBalance: Double?,
-    @SerializedName("interestRate")
-    var interestRate: Double?
+    @SerializedName("encodedKey") var encodedKey: String?,
+    @SerializedName("endingBalance") var endingBalance: Double?,
+    @SerializedName("interestRate") var interestRate: Double?
 )
 
 data class RemoteInterestPaymentSettings(
-    @SerializedName("interestPaymentPoint")
-    var interestPaymentPoint: String?,
-    @SerializedName("interestPaymentDates")
-    var interestPaymentDates: List<String>?
+    @SerializedName("interestPaymentPoint") var interestPaymentPoint: String?,
+    @SerializedName("interestPaymentDates") var interestPaymentDates: List<String>?
 )
 
 data class RemoteCbeInter(
-    @SerializedName("_CBE_IN")
-    var cbeIn: String?
+    @SerializedName("_CBE_IN") var cbeIn: String?
 )

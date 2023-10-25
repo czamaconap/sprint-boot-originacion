@@ -26,7 +26,7 @@ class ClientMapper {
                         rfc = it.rfc
                     )
                 },
-                address = domain.address?.let {
+                address = domain.addresses?.let {
                     arrayListOf(
                         RemoteAddress(
                             line1 = it[0].line1,
@@ -55,7 +55,7 @@ class ClientMapper {
                         rfc = it.rfc
                     )
                 },
-                address = remote.address?.let {
+                addresses = remote.address?.let {
                     arrayListOf(
                         Address(
                             line1 = it[0].line1,

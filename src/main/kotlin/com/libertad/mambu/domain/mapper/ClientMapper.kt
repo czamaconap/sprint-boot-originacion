@@ -17,7 +17,7 @@ class ClientMapper {
                 birthDate = dto.rs_fechanacimiento,
                 mobilePhone = dto.mobilephone,
                 emailAddress = dto.emailaddress1,
-                address = arrayListOf(
+                addresses = arrayListOf(
                     Address(
                         line1 = dto.address1_line1,
                         line2 = dto.address1_line2,
