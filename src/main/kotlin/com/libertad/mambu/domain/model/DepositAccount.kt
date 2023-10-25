@@ -14,7 +14,7 @@ data class DepositAccount(
     @SerializedName("currencyCode") val currencyCode: String?,
     @SerializedName("assignedBranchKey") val assignedBranchKey: String?,
     @SerializedName("interestSettings") val interestSettings: InterestSettings?,
-    @SerializedName("_CBE_INTER") val cbeInter: CbeInter?
+    @SerializedName("_CBE_INTER") val _CBE_INTER: CbeInter?
 )
 @Serializable
 data class InterestSettings(
@@ -43,5 +43,5 @@ data class InterestPaymentSettings(
 )
 @Serializable
 data class CbeInter(
-    @SerializedName("_CBE_IN") val cbeIn: String?
+    @SerializedName("_CBE_IN") val _CBE_IN: String?
 )

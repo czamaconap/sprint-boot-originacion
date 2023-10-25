@@ -1,12 +1,9 @@
 package com.libertad.mambu.aplication.usecases
 
-import com.google.gson.annotations.SerializedName
-import com.libertad.mambu.aplication.util.generateRandom10DigitsString
 import com.libertad.mambu.aplication.util.generateRandom13DigitsString
 import com.libertad.mambu.aplication.util.prettyPrint
 import com.libertad.mambu.domain.model.*
 import com.libertad.mambu.domain.port.`in`.*
-import com.libertad.mambu.infrastructure.adapter.*
 import org.apache.hc.core5.http.HttpStatus
 import org.apache.log4j.Logger
 import org.springframework.http.ResponseEntity
@@ -96,7 +93,7 @@ class OnboardingUseCaseImpl(
             accountType = "CURRENT_ACCOUNT",
             currencyCode = "MXN",
             assignedBranchKey = "8ac983b988fc977101890301c4060084",
-            cbeInter = CbeInter(cbeIn = "00000000000"),
+            _CBE_INTER = CbeInter(_CBE_IN = "00000000000"),
             interestSettings = InterestSettings(
                 interestPaymentSettings = InterestPaymentSettings(
                     interestPaymentPoint = "DAILY",

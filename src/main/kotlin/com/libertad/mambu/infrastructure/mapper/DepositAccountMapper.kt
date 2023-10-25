@@ -44,8 +44,8 @@ class DepositAccountMapper {
                         }
                     )
                 },
-                cbeInter = domain.cbeInter?.let {
-                    RemoteCbeInter(it.cbeIn)
+                _CBE_INTER = domain._CBE_INTER?.let {
+                    RemoteCbeInter(it._CBE_IN)
                 }
             )
         }
@@ -86,8 +86,8 @@ class DepositAccountMapper {
                         }
                     )
                 },
-                cbeInter = remote.cbeInter?.let {
-                    CbeInter(it.cbeIn)
+                _CBE_INTER = remote._CBE_INTER?.let {
+                    CbeInter(it._CBE_IN)
                 }
             )
         }
