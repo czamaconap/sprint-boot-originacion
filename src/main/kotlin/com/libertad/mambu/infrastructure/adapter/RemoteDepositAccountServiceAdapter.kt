@@ -73,7 +73,7 @@ class RemoteDepositAccountServiceAdapter(
     }
 
     @Throws(HttpClientErrorException::class)
-    override fun updateCBAccount(data: HashMap<String, Any>, idAccount: String): HashMap<String, Any> {
+    override fun updateCBAccount(data: HashMap<String, Any>, idAccount: String): ResponseEntity<Void> {
         val url = "${configParams.API_URL}/api/deposits/${idAccount}"
         println(url)
 
@@ -86,12 +86,18 @@ class RemoteDepositAccountServiceAdapter(
         val reqArr = arrayListOf(data)
         println(prettyPrint(reqArr))
         val request = HttpEntity(reqArr, headers)
-        val response = restTemplate.patchForObject(url, request, HashMap::class.java)
-        if (response.isNullOrEmpty()) {
+        //val response = restTemplate.patchForObject(url, request, HashMap::class.java)
+        /*if (response.isNullOrEmpty()) {
             return HashMap()
         } else {
             return response as HashMap<String, Any>
-        }
+        }*/
+        return restTemplate.exchange(
+            url,
+            HttpMethod.PATCH,
+            request,
+            Void::class.java
+        )
     }
 }
 

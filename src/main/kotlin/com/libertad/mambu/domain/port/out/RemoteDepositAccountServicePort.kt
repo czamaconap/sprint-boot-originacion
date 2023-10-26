@@ -10,7 +10,7 @@ interface RemoteDepositAccountServicePort {
 
     fun createDepositAccount(data: DepositAccount): ResponseEntity<RemoteDepositAccount>
 
-    fun updateCBAccount(data: HashMap<String, Any>, idAccount: String): HashMap<String, Any>
+    fun updateCBAccount(data: HashMap<String, Any>, idAccount: String): ResponseEntity<Void>
 
     fun generateCBAccount(data: RemoteGenCBAccountReq): ResponseEntity<RemoteGenCBAccountRes>
 

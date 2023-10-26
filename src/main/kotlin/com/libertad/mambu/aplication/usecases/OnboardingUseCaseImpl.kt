@@ -26,6 +26,7 @@ class OnboardingUseCaseImpl(
 
     override fun initProcess(data: Client): ResponseEntity<HashMap<String, Any>> {
         LOGGER.info("initProcess")
+        val response: HashMap<String,Any> = HashMap()
         var clientRes: ResponseEntity<RemoteClient> = createClientUseCase.createClient(data) // Paso 1
         if(clientRes.statusCode == HttpStatus.CREATED){
             val client = clientRes.body?.let { ClientMapper.mapToDomain(it) }
@@ -44,74 +45,65 @@ class OnboardingUseCaseImpl(
                         reqAccount["notes"] = "Aprueba cuenta"
                         val updateCtaCBRes = updateCBAccountUseCase.updateCBAccount(reqUpdate, account?.id.toString()) // Paso 4
                         if(updateCtaCBRes.statusCode == HttpStatus.CREATED){
-
+                           val aprovRes =  approveDepositAccountUseCase.approveDepositAccount(reqAccount, account.id.toString())
+                            if(aprovRes.statusCode == HttpStatus.CREATED){
+                                val contractRes = createContractUseCase.createContract(contract)// Paso 5
+                                if(contractRes.statusCode == HttpStatus.OK){
+                                    response["status"] = "successes"
+                                    response["code"] = "000"
+                                    response["cliendId"] = client?.id.toString()
+                                }else{
+                                    response["status"] = "error"
+                                    response["code"] = "001"
+                                    response["service"] = "/contratos"
+                                    response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+                                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+                                }
+                            }else{
+                                response["status"] = "error"
+                                response["code"] = "001"
+                                response["service"] = "/updateAccount"
+                                response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+                                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+                            }
                         }else{
-                            //response["status"] = "error"
-                            //response["code"] = "001"
-                            //response["service"] = "/updateAccount"
-                            //response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+                            response["status"] = "error"
+                            response["code"] = "001"
+                            response["service"] = "/updateAccount"
+                            response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+                            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
                         }
                     }else{
-                        //response["status"] = "error"
-                        //response["code"] = "001"
-                        //response["service"] = "/frame-banking/generactacb"
-                        //response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+                        response["status"] = "error"
+                        response["code"] = "001"
+                        response["service"] = "/frame-banking/generactacb"
+                        response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
                     }
                 }else{
-                    //response["status"] = "error"
-                    //response["code"] = "001"
-                    //response["service"] = "/frame-banking/generactacb"
-                    //response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+                    response["status"] = "error"
+                    response["code"] = "001"
+                    response["service"] = "/frame-banking/generactacb"
+                    response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
                 }
             }else{
-                //response["status"] = "error"
-                //response["code"] = "001"
-                //response["service"] = "/account"
-                //response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+                response["status"] = "error"
+                response["code"] = "001"
+                response["service"] = "/account"
+                response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
             }
+            response["code"] = "001"
+            response["service"] = "/clients"
+            response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }else{
-            //response["status"] = "error"
-            //response["code"] = "001"
-            //response["service"] = "/clients"
-            //response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+            response["code"] = "001"
+            response["service"] = "/clients"
+            response["message"] = "CLIENT_ID_ALREADY_IN_USE"
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //contractRes = createContractUseCase.createContract(contract)// Paso 5
-
-        approveDepositAccountUseCase.approveDepositAccount(reqAccount, account.id.toString())
-
-        LOGGER.info("Pruebaaa de loger")
-
-        println(clientRes?.let { prettyPrint(it) })
-        println(prettyPrint(account))
-
-
-        clientRes?.let { LOGGER.info(prettyPrint(it)) }
-
-        response["status"] = "successes"
-        response["code"] = "000"
-        //response["clientId"]= clientRes?.id.toString()
-        //response["clientRoleKey"]= clientRes["clientRoleKey"].toString()
-
-        return ResponseEntity.status(HttpStatus.SC_CREATED).body(response);
-
-
-
-
-        return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).body(response);
     }
 }
 
