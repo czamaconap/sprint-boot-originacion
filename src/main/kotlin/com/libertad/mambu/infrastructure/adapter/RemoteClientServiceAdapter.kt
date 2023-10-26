@@ -8,6 +8,7 @@ import com.libertad.mambu.infrastructure.config.ConfigParams
 import com.libertad.mambu.infrastructure.mapper.ClientMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.*
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 
 class RemoteClientServiceAdapter(
@@ -17,7 +18,8 @@ class RemoteClientServiceAdapter(
     @Autowired
     lateinit var configParams: ConfigParams
 
-    override fun createClient(data: DomainClient): DomainClient? {
+    @Throws(HttpClientErrorException::class)
+    override fun createClient(data: DomainClient): ResponseEntity<RemoteClient> {
         val url = "${configParams.API_URL}/api/clients"
         val headers = HttpHeaders().apply {
             contentType = MediaType.APPLICATION_JSON
@@ -28,20 +30,12 @@ class RemoteClientServiceAdapter(
 
 
         val remoteClient = ClientMapper.mapToRemote(data)
-
-        println(prettyPrint(remoteClient))
-
-
-        val request = HttpEntity(remoteClient, headers)
-        val responseEntity: ResponseEntity<RemoteClient> = restTemplate.exchange(
+        return restTemplate.exchange(
             url,
             HttpMethod.POST,
-            request,
+            HttpEntity(remoteClient, headers),
             RemoteClient::class.java
         )
-        return responseEntity.body?.let {
-            ClientMapper.mapToDomain(it)
-        }
     }
 }
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 
 class RemoteContractsServiceAdapter(
@@ -15,6 +16,7 @@ class RemoteContractsServiceAdapter(
     @Autowired
     lateinit var configParams: ConfigParams
 
+    @Throws(HttpClientErrorException::class)
     override fun createContract(data: HashMap<String, Any>): HashMap<String, Any> {
         val url = "${configParams.API_URL_CONTRATOS}"
         println(url)
