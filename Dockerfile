@@ -5,6 +5,6 @@ RUN gradle bootJar --no-daemon --stacktrace
 FROM openjdk:19-jdk-alpine
 ARG JAR_FILE=build/libs/*.jar
 COPY app_params.properties app_params.properties
-EXPOSE 8080
+EXPOSE 9080
 COPY --from=build /api_onboarding/build/libs/*.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]
