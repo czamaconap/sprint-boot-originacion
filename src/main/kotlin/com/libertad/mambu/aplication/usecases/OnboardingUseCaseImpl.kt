@@ -94,10 +94,6 @@ class OnboardingUseCaseImpl(
                 response["message"] = "CLIENT_ID_ALREADY_IN_USE"
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
             }
-            response["code"] = "001"
-            response["service"] = "/clients"
-            response["message"] = "CLIENT_ID_ALREADY_IN_USE"
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }else{
             response["code"] = "001"
             response["service"] = "/clients"
