@@ -5,6 +5,7 @@ import com.libertad.mambu.aplication.util.prettyPrint
 import com.libertad.mambu.domain.model.*
 import com.libertad.mambu.domain.port.`in`.*
 import com.libertad.mambu.infrastructure.adapter.RemoteClient
+import com.libertad.mambu.infrastructure.adapter.RemoteContractReq
 import com.libertad.mambu.infrastructure.adapter.RemoteGenCBAccountReq
 import com.libertad.mambu.infrastructure.adapter.RemoteGenCBAccountRes
 import com.libertad.mambu.infrastructure.mapper.ClientMapper
@@ -45,13 +46,18 @@ class OnboardingUseCaseImpl(
                         reqAccount["notes"] = "Aprueba cuenta"
                         val updateCtaCBRes = updateCBAccountUseCase.updateCBAccount(reqUpdate, account?.id.toString()) // Paso 4
                         if(updateCtaCBRes.statusCode == HttpStatus.CREATED){
-                           val aprovRes =  approveDepositAccountUseCase.approveDepositAccount(reqAccount, account.id.toString())
+                           val aprovRes =  approveDepositAccountUseCase.approveDepositAccount(reqAccount, account?.id.toString())
                             if(aprovRes.statusCode == HttpStatus.CREATED){
-                                val contractRes = createContractUseCase.createContract(contract)// Paso 5
+                                val contractReq = RemoteContractReq()
+                                val value = HashMap<String,Any>()
+                                value["_CBE_IN"] = ctaCB
+                                contractReq.path = value
+                                val contractRes = createContractUseCase.createContract(contractReq)// Paso 5
                                 if(contractRes.statusCode == HttpStatus.OK){
                                     response["status"] = "successes"
                                     response["code"] = "000"
                                     response["cliendId"] = client?.id.toString()
+                                    return ResponseEntity.status(HttpStatus.CREATED).body(response);
                                 }else{
                                     response["status"] = "error"
                                     response["code"] = "001"

@@ -52,7 +52,7 @@ class RemoteDepositAccountServiceAdapter(
         )
     }
 
-    override fun approveDepositAccount(data: HashMap<String, Any>, idAccount: String): HashMap<String, Any> {
+    override fun approveDepositAccount(data: HashMap<String, Any>, idAccount: String): ResponseEntity<RemoteDepositAccount> {
         val url = "${configParams.API_URL}/api/deposits/${idAccount}:changeState"
         println(url)
 
@@ -64,12 +64,18 @@ class RemoteDepositAccountServiceAdapter(
         }
 
         val request = HttpEntity(data, headers)
-        val response = restTemplate.postForObject(url, request, HashMap::class.java)
+        /*val response = restTemplate.postForObject(url, request, HashMap::class.java)
         return if (response.isNullOrEmpty()) {
             HashMap()
         } else {
             response as HashMap<String, Any>
-        }
+        }*/
+        return restTemplate.exchange(
+            url,
+            HttpMethod.POST,
+            request,
+            RemoteDepositAccount::class.java
+        )
     }
 
     @Throws(HttpClientErrorException::class)

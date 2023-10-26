@@ -34,7 +34,7 @@ class DepositAccountService(
         return updateCBAccountUseCase.updateCBAccount(data, idAccount)
     }
 
-    override fun approveDepositAccount(data: HashMap<String, Any>, idAccount: String): HashMap<String, Any> {
+    override fun approveDepositAccount(data: HashMap<String, Any>, idAccount: String): ResponseEntity<RemoteDepositAccount> {
         return approveDepositAccountUseCase.approveDepositAccount(data, idAccount)
     }
 }
