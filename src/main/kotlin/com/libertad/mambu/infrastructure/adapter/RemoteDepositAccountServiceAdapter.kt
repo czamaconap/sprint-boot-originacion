@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.*
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
+import java.io.IOException
 
 class RemoteDepositAccountServiceAdapter(
     private var restTemplate: RestTemplate
@@ -18,7 +19,7 @@ class RemoteDepositAccountServiceAdapter(
     @Autowired
     lateinit var configParams: ConfigParams
 
-    @Throws(HttpClientErrorException::class)
+    @Throws(IOException::class)
     override fun createDepositAccount(data: DepositAccount): ResponseEntity<RemoteDepositAccount> {
         val url = "${configParams.API_URL}/api/deposits"
         val headers = HttpHeaders().apply {
@@ -36,7 +37,7 @@ class RemoteDepositAccountServiceAdapter(
         )
     }
 
-    @Throws(HttpClientErrorException::class)
+    @Throws(IOException::class)
     override fun generateCBAccount(data: RemoteGenCBAccountReq): ResponseEntity<RemoteGenCBAccountRes>  {
         val url = "${configParams.API_URL}/frame-banking/generactacb"
         val headers = HttpHeaders().apply {
@@ -51,7 +52,7 @@ class RemoteDepositAccountServiceAdapter(
             RemoteGenCBAccountRes::class.java
         )
     }
-
+    @Throws(IOException::class)
     override fun approveDepositAccount(data: HashMap<String, Any>, idAccount: String): ResponseEntity<RemoteDepositAccount> {
         val url = "${configParams.API_URL}/api/deposits/${idAccount}:changeState"
         println(url)
@@ -78,7 +79,7 @@ class RemoteDepositAccountServiceAdapter(
         )
     }
 
-    @Throws(HttpClientErrorException::class)
+    @Throws(IOException::class)
     override fun updateCBAccount(data: HashMap<String, Any>, idAccount: String): ResponseEntity<Void> {
         val url = "${configParams.API_URL}/api/deposits/${idAccount}"
         println(url)

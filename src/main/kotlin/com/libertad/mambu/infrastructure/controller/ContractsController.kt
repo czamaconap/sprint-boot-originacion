@@ -2,6 +2,8 @@ package com.libertad.mambu.infrastructure.controller
 
 import com.libertad.mambu.aplication.service.ContractsService
 import com.libertad.mambu.aplication.service.DepositAccountService
+import com.libertad.mambu.infrastructure.adapter.RemoteContractReq
+import com.libertad.mambu.infrastructure.adapter.RemoteContractRes
 import org.apache.hc.core5.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -14,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController
 class ContractsController(private val contractsService: ContractsService) {
 
     @PostMapping
-    fun createContract(@RequestBody data: HashMap<String, Any>): ResponseEntity<HashMap<String, Any>> {
-        return ResponseEntity.status(HttpStatus.SC_CREATED).body(contractsService.createContract(data));
+    fun createContract(@RequestBody data: RemoteContractReq): ResponseEntity<RemoteContractRes> {
+        return contractsService.createContract(data);
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.*
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
+import java.io.IOException
 
 class RemoteClientServiceAdapter(
     private val restTemplate: RestTemplate
@@ -18,7 +19,7 @@ class RemoteClientServiceAdapter(
     @Autowired
     lateinit var configParams: ConfigParams
 
-    @Throws(HttpClientErrorException::class)
+    @Throws(IOException::class)
     override fun createClient(data: DomainClient): ResponseEntity<RemoteClient> {
         val url = "${configParams.API_URL}/api/clients"
         val headers = HttpHeaders().apply {

@@ -13,6 +13,9 @@ import com.libertad.mambu.infrastructure.mapper.DepositAccountMapper
 import org.apache.log4j.Logger
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.client.HttpServerErrorException
+import org.springframework.web.client.ResourceAccessException
 
 class OnboardingUseCaseImpl(
     private val createClientUseCase: CreateClientUseCase,
@@ -27,66 +30,35 @@ class OnboardingUseCaseImpl(
 
     override fun initProcess(data: Client): ResponseEntity<HashMap<String, Any>> {
         val response: HashMap<String, Any> = HashMap()
-
-        fun handleError(service: String, message: String): ResponseEntity<HashMap<String, Any>> {
-            response["status"] = "error"
-            response["code"] = "001"
-            response["service"] = service
-            response["message"] = message
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response)
-        }
-
-        val clientRes: ResponseEntity<RemoteClient> = createClientUseCase.createClient(data)
-        if (clientRes.statusCode != HttpStatus.CREATED) {
-            return handleError("/clients", "CLIENT_ID_ALREADY_IN_USE")
-        }
-
-        val client = clientRes.body?.let { ClientMapper.mapToDomain(it) }
-
-        val account: DepositAccount = llenarDepositAccount(client?.encodedKey)
-        val accountRes = createDepositAccountUseCase.createDepositAccount(account)
-
-        if (accountRes.statusCode != HttpStatus.CREATED) {
-            return handleError("/account", "CLIENT_ID_ALREADY_IN_USE")
-        }
-
-        val accountDomain = accountRes.body?.let { DepositAccountMapper.mapToDomain(it) }
-
-        val generateCtaCB = generateCLABE(accountDomain?.id)
-        val generateCtaCBRes = generateCBAccountUseCase.generateCBAccount(generateCtaCB)
-
-        if (generateCtaCBRes.statusCode != HttpStatus.OK || generateCtaCBRes.body?.code != "000") {
-            return handleError("/frame-banking/generactacb", "CLIENT_ID_ALREADY_IN_USE")
-        }
-
-        val reqUpdate = updateAccount(generateCtaCBRes.body?.ctaClabe)
-        val reqAccount: HashMap<String, Any> = HashMap()
-        reqAccount["action"] = "APPROVE"
-        reqAccount["notes"] = "Aprueba cuenta"
-        val updateCtaCBRes = updateCBAccountUseCase.updateCBAccount(reqUpdate, accountDomain?.id.toString())
-
-        if (updateCtaCBRes.statusCode != HttpStatus.CREATED) {
-            return handleError("/updateAccount", "CLIENT_ID_ALREADY_IN_USE")
-        }
-
-        val aprovRes = approveDepositAccountUseCase.approveDepositAccount(reqAccount, accountDomain?.id.toString())
-        if (aprovRes.statusCode != HttpStatus.CREATED) {
-            return handleError("/aproveDepositAccount", "CLIENT_ID_ALREADY_IN_USE")
-        }
-
-        val contractReq = RemoteContractReq()
-        val value = HashMap<String, Any>()
-        value["_CBE_IN"] = generateCtaCBRes.body!!
-        contractReq.path = value
-        val contractRes = createContractUseCase.createContract(contractReq)
-
-        if (contractRes.statusCode == HttpStatus.OK) {
+        try {
+            val clientRes: ResponseEntity<RemoteClient> = createClientUseCase.createClient(data)
+            val client = clientRes.body?.let { ClientMapper.mapToDomain(it) }
+            val account: DepositAccount = llenarDepositAccount(client?.encodedKey)
+            val accountRes = createDepositAccountUseCase.createDepositAccount(account)
+            val accountDomain = accountRes.body?.let { DepositAccountMapper.mapToDomain(it) }
+            val generateCtaCB = generateCLABE(accountDomain?.id)
+            val generateCtaCBRes = generateCBAccountUseCase.generateCBAccount(generateCtaCB)
+            val reqUpdate = updateAccount(generateCtaCBRes.body?.ctaClabe)
+            val reqAccount: HashMap<String, Any> = HashMap()
+            reqAccount["action"] = "APPROVE"
+            reqAccount["notes"] = "Aprueba cuenta"
+            val updateCtaCBRes = updateCBAccountUseCase.updateCBAccount(reqUpdate, accountDomain?.id.toString())
+            val aprovRes = approveDepositAccountUseCase.approveDepositAccount(reqAccount, accountDomain?.id.toString())
+            val contractReq = RemoteContractReq()
+            val value = HashMap<String, Any>()
+            value["_CBE_IN"] = generateCtaCBRes.body!!
+            contractReq.path = value
+            val contractRes = createContractUseCase.createContract(contractReq)
             response["status"] = "successes"
             response["code"] = "000"
             response["cliendId"] = client?.id.toString()
             return ResponseEntity.status(HttpStatus.CREATED).body(response)
-        } else {
-            return handleError("/contratos", "CLIENT_ID_ALREADY_IN_USE")
+        } catch (ex: MyCustomException) {
+            response["status"] = "error"
+            response["code"] = "001"
+            response["service"] = ex.service
+            response["message"] = ex.errList.errors
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response)
         }
     }
 

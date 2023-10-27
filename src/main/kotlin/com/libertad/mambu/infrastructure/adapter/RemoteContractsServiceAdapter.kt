@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.*
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
+import java.io.IOException
 
 class RemoteContractsServiceAdapter(
     private val restTemplate: RestTemplate
@@ -16,7 +17,7 @@ class RemoteContractsServiceAdapter(
     @Autowired
     lateinit var configParams: ConfigParams
 
-    @Throws(HttpClientErrorException::class)
+    @Throws(IOException::class)
     override fun createContract(data: RemoteContractReq): ResponseEntity<RemoteContractRes> {
         val url = "${configParams.API_URL_CONTRATOS}"
         println(url)
